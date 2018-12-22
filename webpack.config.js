@@ -7,7 +7,7 @@ module.exports = {
  target: 'electron-renderer',
 
  entry: {
-   app: ['webpack/hot/dev-server', './main.jsx']
+   app: ['webpack/hot/dev-server', './main.jsx'],
  },
 
  output: {
@@ -18,7 +18,7 @@ module.exports = {
 
  devServer: {
    contentBase: './public',
-   publicPath: '/built'
+   publicPath: '/built/'
  },
 
  module: {
