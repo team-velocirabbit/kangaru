@@ -1,0 +1,29 @@
+body {
+    height: 100%;
+    width: 98%;
+    border-style: solid;
+    border-color: black;
+    margin-left: 8px;
+
+}
+
+img {
+    height: 50px;
+    width: 50px;
+}
+
+/* .mainContainer{
+   
+} */
+
+#app {
+    display: flex;
+    justify-content: flex;
+}
+
+.queue {
+    border-style: solid;
+    border-color: yellow;
+    background-color: pink;
+
+}
