@@ -3,7 +3,8 @@ import Dropdown from 'react-dropdown';
 import ExtractConnect from '../components/ExtractConnect';
 import ExtractImport from '../components/ExtractImport';
 import 'react-dropdown/style.css';
-
+const remote = require('electron').remote;
+const { dialog } = remote;
 
 const DROPDOWN_OPTIONS = [
   'Import', 'Connect'
@@ -19,6 +20,7 @@ class Extract extends Component {
       host: '',
       port: null,
       database: '',
+      filePath: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -26,6 +28,8 @@ class Extract extends Component {
     this.handleHostChange = this.handleHostChange.bind(this);
     this.handlePortChange = this.handlePortChange.bind(this);
     this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
+    // this.handleFilePathChange = this.handleFilePathChange.bind(this);
+    this.browseFiles = this.browseFiles.bind(this);
 }
 
   handleDropdownChange(e) {
@@ -75,20 +79,42 @@ class Extract extends Component {
     });
   }
 
+//   handleFilePathChange(e) {
+//     this.setState({
+//       filePath: e.target.value,
+//     })
+//   }
+
+  browseFiles() {
+    dialog.showOpenDialog({ 
+      properties: ['openFile'] 
+    },
+    (file) => {
+    //   console.log('file is ', file[0])
+      this.setState({
+        filePath: file[0],
+      });
+    //   console.log('filePath is ', this.state.filePath)
+    });
+  }
+
     
     // const { extractImport, extractConnect } = tprops;
 
     render(){
-      const { extractImport, extractConnect } = this.state;
+      const { extractImport, extractConnect, filePath } = this.state;
       const importComp = extractImport ? 
         <ExtractImport
+        //   handleFilePathChange = {this.handleFilePathChange}
+          browseFiles = {this.browseFiles}
+          filePath = {filePath}
         />
         : null
         const connectComp = extractConnect ? 
         <ExtractConnect 
         //   username = {username}
         //   password = {password}
-        //   host = {host}
+        //   host =  {host}
         //   port = {port}
         //   database = {database}
           handleUsernameChange = {this.handleUsernameChange}
