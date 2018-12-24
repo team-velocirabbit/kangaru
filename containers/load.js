@@ -23,6 +23,7 @@ class Load extends Component {
       database: '',
       fileName: '',
       location: '',
+      format: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -32,6 +33,7 @@ class Load extends Component {
     this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
+    this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
   }
 
   handleDropdownChange(e) {
@@ -46,8 +48,6 @@ class Load extends Component {
         loadConnect: true,
       });
     }
-    console.log('extractImport is ', this.state.extractImport)
-    console.log('extractConnect is ', this.state.extractConnect)
   }
     
   handleUsernameChange(e) {
@@ -101,14 +101,26 @@ class Load extends Component {
     });
   }
 
+  handleFileTypeChange(e) {
+    const newValue = `${e.value}`
+    this.setState({
+      format: newValue,
+    });
+    console.log('e value is ', e.value)
+    console.log('newValue is ', newValue)
+    console.log('format is ', this.state.format)
+  }
+
   render() {
-    const { loadExport, loadConnect, fileName, location } = this.state;
+    const { loadExport, loadConnect, fileName, location, format } = this.state;
     const exportComp = loadExport ? 
       <LoadExport
         fileName = {fileName}
         location = {location}
         handleFilenameChange = {this.handleFilenameChange}
+        handleFileTypeChange = {this.handleFileTypeChange}
         browseFiles = {this.browseFiles}
+        format = {format}
       />
       : null
     return (
