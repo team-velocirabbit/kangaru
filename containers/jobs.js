@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Extract from './extract';
 import Transform from '../components/transform';
-import Load from '../components/load';
+import Load from './load';
 
 class Jobs extends Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Dropdown from 'react-dropdown';
-import ExtractConnect from '../components/ExtractConnect';
+import Connect from '../components/Connect';
 import ExtractImport from '../components/ExtractImport';
 import 'react-dropdown/style.css';
 const remote = require('electron').remote;
@@ -79,12 +79,6 @@ class Extract extends Component {
     });
   }
 
-//   handleFilePathChange(e) {
-//     this.setState({
-//       filePath: e.target.value,
-//     })
-//   }
-
   browseFiles() {
     dialog.showOpenDialog({ 
       properties: ['openFile'] 
@@ -101,40 +95,37 @@ class Extract extends Component {
     
     // const { extractImport, extractConnect } = tprops;
 
-    render(){
-      const { extractImport, extractConnect, filePath } = this.state;
-      const importComp = extractImport ? 
-        <ExtractImport
+  render() {
+    const { extractImport, extractConnect, filePath } = this.state;
+    const importComp = extractImport ? 
+      <ExtractImport
         //   handleFilePathChange = {this.handleFilePathChange}
           browseFiles = {this.browseFiles}
           filePath = {filePath}
+      />
+      : null
+    const connectComp = extractConnect ? 
+      <Connect 
+        handleUsernameChange = {this.handleUsernameChange}
+        handlePasswordChange = {this.handlePasswordChange}
+        handleHostChange = {this.handleHostChange}
+        handlePortChange = {this.handlePortChange}
+        handleDatabaseChange = {this.handleDatabaseChange}
+      />
+      : null
+    return (      
+      <div>
+        <h1>Extract</h1>
+        <Dropdown
+          options={DROPDOWN_OPTIONS} 
+          onChange={this.handleDropdownChange} 
+          placeholder="Select extraction method"
         />
-        : null
-        const connectComp = extractConnect ? 
-        <ExtractConnect 
-        //   username = {username}
-        //   password = {password}
-        //   host =  {host}
-        //   port = {port}
-        //   database = {database}
-          handleUsernameChange = {this.handleUsernameChange}
-          handlePasswordChange = {this.handlePasswordChange}
-          handleHostChange = {this.handleHostChange}
-          handlePortChange = {this.handlePortChange}
-          handleDatabaseChange = {this.handleDatabaseChange}
-        />
-        : null
-        return(
-          
-            <div>
-                <h1>Extract</h1>
-                <Dropdown options={DROPDOWN_OPTIONS} onChange={this.handleDropdownChange} placeholder="Select extraction method"
-                />
-                {importComp}
-                {connectComp}
-            </div>
-        );
-    };
-};
+        {importComp}
+        {connectComp}
+      </div>
+    );
+  }
+}
 
 export default Extract;
