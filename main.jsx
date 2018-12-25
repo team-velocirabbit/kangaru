@@ -6,7 +6,7 @@ import './main.css';
 
 
 class App extends Component {
-    render(){
+  render(){
         return(
             <div className="mainContainer">
                 <img id="kangarooLogo" src="https://www.naukrinama.com/stressbuster/wp-content/uploads/2018/08/ilustracion-del-canguro-de-dibujos-animados_29937-1176.jpg" alt="kangaru logo"/>
