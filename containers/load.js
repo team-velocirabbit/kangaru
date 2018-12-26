@@ -90,7 +90,7 @@ class Load extends Component {
 
   browseFiles() {
     dialog.showOpenDialog({ 
-      properties: ['openFile'], 
+      properties: ['openDirectory'], 
     },
     (file) => {
     //   console.log('file is ', file[0])
@@ -123,6 +123,15 @@ class Load extends Component {
         format = {format}
       />
       : null
+    const connectComp = loadConnect ?
+      <Connect 
+        handleUsernameChange = {this.handleUsernameChange}
+        handlePasswordChange = {this.handlePasswordChange}
+        handleHostChange = {this.handleHostChange}
+        handlePortChange = {this.handlePortChange}
+        handleDatabaseChange = {this.handleDatabaseChange}
+      />
+      : null
     return (
       <div>
         <h1>Load</h1>
@@ -132,6 +141,7 @@ class Load extends Component {
           placeholder="Select loading method"
         />
         {exportComp}
+        {connectComp}
       </div>      
     );
   }

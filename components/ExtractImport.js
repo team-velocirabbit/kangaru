@@ -5,8 +5,10 @@ const ExtractImport = (props) => {
   return (
     <div>
       <h2>Import</h2>
-      <div>File Path: <input type="text" value={filePath}/></div>
-      <button onClick={() => browseFiles()}>Browse</button>
+      <div>
+        File Path: <input type="text" value={filePath}/>
+        <button onClick={() => browseFiles()}>Browse</button>
+      </div>    
     </div>
     
   )

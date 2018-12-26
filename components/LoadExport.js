@@ -24,7 +24,7 @@ const ExtractImport = (props) => {
           type='text'
           onChange = {handleFilenameChange} 
           placeholder = 'What will your file be called?' 
-          value={`${fileName}.${format}`}
+          value={fileName}
         />
       </div>
       <div>Location: 
