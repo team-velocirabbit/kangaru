@@ -3,6 +3,7 @@ import Extract from './extract';
 import Transform from '../components/transform';
 import Load from './load';
 import Options from '../components/Options';
+import '../main.css';
 
 class Jobs extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class Jobs extends Component {
     this.setState({
       email: e.target.value,
     });
+    console.log('email is ', this.state.email)
   }
 
   handlePhoneChange(e) {
@@ -31,24 +33,53 @@ class Jobs extends Component {
   }
 
   handleSelection(e) {
-    console.log('e value is ', e.target.value);
+    if (e.target.value === 'email') {
+      if (this.state.emailCheck === false) {
+        this.setState({
+          emailCheck: true,
+        });
+      };
+      if (this.state.emailCheck === true) {
+        this.setState({
+          emailCheck: false,
+        });
+      }
+    } else if (e.target.value === 'text') {
+        if (this.state.textCheck === false) {
+          this.setState({
+            textCheck: true,
+          });
+        };
+        if (this.state.textCheck === true) {
+          this.setState({
+            textCheck: false,
+          });
+        }
+    }
+    console.log('textState is ', this.state.textCheck)
+    console.log('emailState is ', this.state.emailCheck)
   }
 
   render() {
     const { emailCheck, textCheck, email, phoneNumber } = this.state;
     return (
       <div>
-        <h1>Jobs Container</h1>
-        <Extract />
-        <Transform />
-        <Load />
-        <Options 
-          emailCheck = {emailCheck}
-          textCheck = {textCheck}
-          email = {email}
-          phoneNumber = {phoneNumber}
-          handleSelection = {this.handleSelection}
-        />
+        <div className='jobs-container'>
+          <Extract />
+          <Transform />
+          <Load />
+        </div>
+        <div>
+          <Options 
+            emailCheck = {emailCheck}
+            textCheck = {textCheck}
+            email = {email}
+            phoneNumber = {phoneNumber}
+            handleSelection = {this.handleSelection}
+            handleEmailChange = {this.handleEmailChange}
+            handlePhoneChange = {this.handlePhoneChange}
+          />
+        </div>
       </div>
     );
   };

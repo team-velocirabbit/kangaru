@@ -18,7 +18,6 @@ const ExtractImport = (props) => {
   } = props;
   return (
     <div>
-      <h2>Export</h2>
       <div>Filename: 
         <input 
           type='text'

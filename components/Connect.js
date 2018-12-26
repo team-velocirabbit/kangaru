@@ -11,11 +11,11 @@ const Connect = (props) => {
     handlePasswordChange, 
     handleHostChange, 
     handlePortChange, 
-    handleDatabaseChange 
+    handleDatabaseChange,
   } = props;
   return (
     <div>
-      <h2>Connect</h2>
+      {/* <h2>Connect</h2> */}
       <div>Username: <input type="text" onChange={handleUsernameChange}/></div>
       <div>Password: <input type="text" onChange={handlePasswordChange}/></div>
       <div>Host: <input type="text" onChange={handleHostChange}/></div>

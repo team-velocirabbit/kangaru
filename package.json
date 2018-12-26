@@ -9,7 +9,8 @@
   "author": "Josie Glore, Mario Granberri, Jae Lee, Tim Kachler",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^4.0.0"
+    "electron": "^4.0.0",
+    "html-loader": "^0.5.5"
   },
   "description": "",
   "dependencies": {
@@ -24,6 +25,8 @@
     "file-loader": "^2.0.0",
     "fs": "0.0.1-security",
     "html-webpack-plugin": "^3.2.0",
+    "monaco-editor": "^0.15.6",
+    "monaco-editor-webpack-plugin": "^1.7.0",
     "normalize.css": "^8.0.0",
     "path": "^0.12.7",
     "react": "^16.7.0",

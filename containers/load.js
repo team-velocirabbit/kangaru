@@ -24,6 +24,7 @@ class Load extends Component {
       fileName: '',
       location: '',
       format: '',
+      dropdownValue: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -41,11 +42,13 @@ class Load extends Component {
       this.setState({
         loadConnect: false,
         loadExport: true,
+        dropdownValue: 'Export',
       });
     } else if (e.value === 'Connect') {
       this.setState({
         loadExport: false,
         loadConnect: true,
+        dropdownValue: 'Connect',
       });
     }
   }
@@ -112,7 +115,7 @@ class Load extends Component {
   }
 
   render() {
-    const { loadExport, loadConnect, fileName, location, format } = this.state;
+    const { loadExport, loadConnect, fileName, location, format, dropdownValue } = this.state;
     const exportComp = loadExport ? 
       <LoadExport
         fileName = {fileName}
@@ -139,6 +142,7 @@ class Load extends Component {
           options={DROPDOWN_OPTIONS} 
           onChange={this.handleDropdownChange} 
           placeholder="Select loading method"
+          value={dropdownValue}
         />
         {exportComp}
         {connectComp}

@@ -15,6 +15,7 @@ class Extract extends Component {
     this.state = {
       extractImport: false,
       extractConnect: false,
+      dropdownValue: '',
       username: '',
       password: '',
       host: '',
@@ -37,11 +38,13 @@ class Extract extends Component {
       this.setState({
         extractConnect: false,
         extractImport: true,
+        dropdownValue: 'Import',
       });
     } else if (e.value === 'Connect') {
       this.setState({
         extractImport: false,
         extractConnect: true,
+        dropdownValue: 'Connect',
       });
     }
     console.log('extractImport is ', this.state.extractImport)
@@ -96,12 +99,13 @@ class Extract extends Component {
     // const { extractImport, extractConnect } = tprops;
 
   render() {
-    const { extractImport, extractConnect, filePath } = this.state;
+    const { extractImport, extractConnect, filePath, dropdownValue } = this.state;
     const importComp = extractImport ? 
       <ExtractImport
         //   handleFilePathChange = {this.handleFilePathChange}
           browseFiles = {this.browseFiles}
           filePath = {filePath}
+          dropdownValue = {dropdownValue}
       />
       : null
     const connectComp = extractConnect ? 
@@ -111,6 +115,7 @@ class Extract extends Component {
         handleHostChange = {this.handleHostChange}
         handlePortChange = {this.handlePortChange}
         handleDatabaseChange = {this.handleDatabaseChange}
+        dropdownValue = {dropdownValue}
       />
       : null
     return (      
@@ -120,6 +125,7 @@ class Extract extends Component {
           options={DROPDOWN_OPTIONS} 
           onChange={this.handleDropdownChange} 
           placeholder="Select extraction method"
+          value={dropdownValue}
         />
         {importComp}
         {connectComp}
