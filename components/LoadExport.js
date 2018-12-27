@@ -9,7 +9,7 @@ const ExtractImport = (props) => {
     { value: 'xml', label: 'XML' }
   ];
   const { 
-    browseFiles, 
+    browseDirectories, 
     fileName, 
     handleFilenameChange, 
     handleFileTypeChange,
@@ -18,6 +18,7 @@ const ExtractImport = (props) => {
   } = props;
   return (
     <div>
+      <br/>
       <div>Filename: 
         <input 
           type='text'
@@ -31,7 +32,7 @@ const ExtractImport = (props) => {
           type='text'
           value={location}
         />
-        <button onClick={() => browseFiles()}>Browse</button>
+        <button onClick={() => browseDirectories()}>Browse</button>
       </div>
       <div>
         File Format: 

@@ -16,6 +16,7 @@ const Connect = (props) => {
   } = props;
   return (
     <div>
+      <br/>
       <h3>Please enter your database credentials</h3>
       <div>Username: <input type="text" onChange={handleUsernameChange}/></div>
       <div>Password: <input type="password" onChange={handlePasswordChange}/></div>

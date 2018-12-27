@@ -16,27 +16,9 @@ class Load extends Component {
     this.state = {
       loadExport: false,
       loadConnect: false,
-      username: '',
-      password: '',
-      host: '',
-      port: null,
-      database: '',
-      uri: '',
-      fileName: '',
-      location: '',
-      format: '',
       dropdownValue: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleHostChange = this.handleHostChange.bind(this);
-    this.handlePortChange = this.handlePortChange.bind(this);
-    this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
-    this.handleUriChange = this.handleUriChange.bind(this);
-    this.handleFilenameChange = this.handleFilenameChange.bind(this);
-    this.browseFiles = this.browseFiles.bind(this);
-    this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
   }
 
   handleDropdownChange(e) {
@@ -55,92 +37,36 @@ class Load extends Component {
     }
   }
     
-  handleUsernameChange(e) {
-    this.setState({
-      username: e.target.value,
-    });
-  }
-    
-  handlePasswordChange(e) {
-    this.setState({
-      password: e.target.value,
-    });
-  }
-
-  handleHostChange(e) {
-    this.setState({
-      host: e.target.value,
-    });
-  }
-
-  handlePortChange(e) {
-    console.log('port is ', e.target.value);
-    this.setState({
-      port: e.target.value,
-    });
-  }
-
-  handleDatabaseChange(e) {
-    this.setState({
-      database: e.target.value,
-    });
-  }
-
-  handleUriChange(e) {
-    this.setState({
-      uri: e.target.value,
-    })
-  }
-
-  handleFilenameChange(e) {
-    this.setState({
-      fileName: e.target.value,
-    });
-    console.log('filename is ', this.state.fileName);
-  }
-
-  browseFiles() {
-    dialog.showOpenDialog({ 
-      properties: ['openDirectory'], 
-    },
-    (file) => {
-    //   console.log('file is ', file[0])
-      this.setState({
-        location: file[0],
-      });
-    //   console.log('filePath is ', this.state.filePath)
-    });
-  }
-
-  handleFileTypeChange(e) {
-    const newValue = `${e.value}`
-    this.setState({
-      format: newValue,
-    });
-    console.log('e value is ', e.value)
-    console.log('newValue is ', newValue)
-    console.log('format is ', this.state.format)
-  }
-
   render() {
-    const { loadExport, loadConnect, fileName, location, format, dropdownValue } = this.state;
+    const { loadExport, loadConnect, dropdownValue } = this.state;
+    const { username, password, port, host, database, uri, location, fileName, format, handleUsernameChange, handlePasswordChange, handlePortChange, handleHostChange, handleDatabaseChange, handleUriChange, handleFilenameChange, handleFileTypeChange, browseDirectories } = this.props;
     const exportComp = loadExport ? 
       <LoadExport
         fileName = {fileName}
         location = {location}
-        handleFilenameChange = {this.handleFilenameChange}
-        handleFileTypeChange = {this.handleFileTypeChange}
-        browseFiles = {this.browseFiles}
         format = {format}
+        dropdownValue = {dropdownValue}
+        handleFilenameChange = {handleFilenameChange}
+        handleFileTypeChange = {handleFileTypeChange}
+        browseDirectories = {browseDirectories}
+      
       />
       : null
     const connectComp = loadConnect ?
       <Connect 
-        handleUsernameChange = {this.handleUsernameChange}
-        handlePasswordChange = {this.handlePasswordChange}
-        handleHostChange = {this.handleHostChange}
-        handlePortChange = {this.handlePortChange}
-        handleDatabaseChange = {this.handleDatabaseChange}
+        username = {username}
+        password = {password}
+        port = {port}
+        host = {host}
+        database = {database}
+        uri = {uri}
+        dropdownValue = {dropdownValue}
+        handleUsernameChange = {handleUsernameChange}
+        handlePasswordChange = {handlePasswordChange}
+        handleHostChange = {handleHostChange}
+        handlePortChange = {handlePortChange}
+        handleDatabaseChange = {handleDatabaseChange}
+        handleUriChange = {handleUriChange}
       />
       : null
     return (

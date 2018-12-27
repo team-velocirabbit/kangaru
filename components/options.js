@@ -19,7 +19,7 @@ const Options = (props) => {
             <input
             type='checkbox'
             value='email'
-            defaultChecked='false'
+            defaultChecked={emailCheck}
             onChange={handleSelection}
             />
             Email 
