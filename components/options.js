@@ -6,10 +6,14 @@ const Options = (props) => {
     textCheck,
     email,
     phoneNumber,
+    uri, 
+    filePath,
+    fileName,
     handleSelection,
     handleEmailChange,
     handlePhoneChange,
-    handleNotifications
+    handleNotifications,
+    startEtl
   } = props;
     return (
       <div>
@@ -40,7 +44,7 @@ const Options = (props) => {
             placeholder='Receive text notifications about this job'
             onChange={handlePhoneChange}
             />
-            <button onClick={handleNotifications}>Start</button>
+            <button onClick={() => startEtl()}>Start</button>
         </span>
       </div>
     );

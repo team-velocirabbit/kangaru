@@ -14,6 +14,22 @@ const client = require('twilio')(
   process.env.TWILIO_AUTH_TOKEN
 );
 const sgMail = require('@sendgrid/mail');
+const etl = require('etl-test');
+
+const combineNames = (data) => {
+  const nd = {};
+  nd.id = data.id * 1;
+  nd.full_name = data['first_name'] + ' ' + data['last_name'];
+  nd.email_address = data.email_address;
+  nd.password = data.password;
+  nd.phone = data.phone.replace(/[^0-9]/g, '');
+  nd.street_address = data.street_address;
+  nd.city = data.city;
+  nd.postal_code = data.postal_code;
+  nd.country = data.country;
+  nd['__line'] = (data.id * 1) + 1;
+  return nd;
+};
 
 
 class Jobs extends Component {
@@ -29,7 +45,8 @@ class Jobs extends Component {
       host: '',
       port: null,
       database: '',
-      uri: '',
+      extractUri: '',
+      loadUri: '',
       filePath: '',
       location: '',
       fileName: '',
@@ -44,11 +61,13 @@ class Jobs extends Component {
     this.handleHostChange = this.handleHostChange.bind(this);
     this.handlePortChange = this.handlePortChange.bind(this);
     this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
-    this.handleUriChange = this.handleUriChange.bind(this);
+    this.handleExtractUriChange = this.handleExtractUriChange.bind(this);
+    this.handleLoadUriChange = this.handleLoadUriChange.bind(this);
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
     this.browseDirectories = this.browseDirectories.bind(this);
+    this.startEtl = this.startEtl.bind(this);
   }
 
   handleEmailChange(e) {
@@ -148,9 +167,15 @@ class Jobs extends Component {
       });
     }
   
-    handleUriChange(e) {
+    handleExtractUriChange(e) {
       this.setState({
-        uri: e.target.value,
+        extractUri: e.target.value,
+      })
+    }
+
+    handleLoadUriChange(e) {
+      this.setState({
+        loadUri: e.target.value,
       })
     }
 
@@ -197,6 +222,43 @@ class Jobs extends Component {
       });
     }
 
+    startEtl() {
+      const { extractUri, loadUri, filePath, fileName } = this.state;
+      console.log('extractUri is ', extractUri)
+      console.log('loadUri is ', loadUri)
+      console.log('filePath is ', filePath)
+      console.log('fileName is ', fileName)
+      console.log('inside startEtl');
+      if (extractUri.length > 0) {
+        if (loadUri.length > 0) {
+          new etl()
+          .simple(extractUri, combineNames, loadUri, 'my_database')
+          .combine()
+          .start()
+        }
+        else {
+          new etl()
+          .simple(extractUri, combineNames, fileName, 'my_database')
+          .combine()
+          .start()
+        }
+      }
+      if (filePath.length > 0) {
+        if (loadUri.length > 0) {
+          new etl()
+          .simple(filePath, combineNames, loadUri, 'my_database')
+          .combine()
+          .start()
+        }
+        else {
+          new etl()
+          .simple(filePath, combineNames, fileName, 'my_database')
+          .combine()
+          .start()
+        }
+      }
+    }
+
   render() {
     const { 
       emailCheck, 
@@ -208,7 +270,8 @@ class Jobs extends Component {
       port,
       host,
       database,
-      uri,
+      extractUri,
+      loadUri,
       filePath,
       location,
       fileName,
@@ -222,14 +285,14 @@ class Jobs extends Component {
             port = {port}
             host = {host}
             database = {database}
-            uri = {uri}
+            extractUri = {extractUri}
             filePath = {filePath}
             handleUsernameChange = {this.handleUsernameChange}
             handlePasswordChange = {this.handlePasswordChange}
             handlePortChange = {this.handlePortChange}
             handleHostChange = {this.handleHostChange}
             handleDatabaseChange = {this.handleDatabaseChange}
-            handleUriChange = {this.handleUriChange}
+            handleExtractUriChange = {this.handleExtractUriChange}
             browseFiles = {this.browseFiles}
           />
           <Transform />
@@ -239,7 +302,7 @@ class Jobs extends Component {
              port = {port}
              host = {host}
              database = {database}
-             uri = {uri}
+             loadUri = {loadUri}
              location = {location}
              fileName = {fileName}
              format = {format}
@@ -248,7 +311,7 @@ class Jobs extends Component {
              handlePortChange = {this.handlePortChange}
              handleHostChange = {this.handleHostChange}
              handleDatabaseChange = {this.handleDatabaseChange}
-             handleUriChange = {this.handleUriChange}
+             handleLoadUriChange = {this.handleLoadUriChange}
              handleFilenameChange = {this.handleFilenameChange}
              handleFileTypeChange = {this.handleFileTypeChange}
              browseDirectories = {this.browseDirectories}
@@ -260,6 +323,11 @@ class Jobs extends Component {
             textCheck = {textCheck}
             email = {email}
             phoneNumber = {phoneNumber}
+            extractUri = {extractUri}
+            loadUri = {loadUri}
+            filePath = {filePath}
+            fileName = {fileName}
+            startEtl = {this.startEtl}
             handleSelection = {this.handleSelection}
             handleEmailChange = {this.handleEmailChange}
             handlePhoneChange = {this.handlePhoneChange}

@@ -39,7 +39,7 @@ class Load extends Component {
     
   render() {
     const { loadExport, loadConnect, dropdownValue } = this.state;
-    const { username, password, port, host, database, uri, location, fileName, format, handleUsernameChange, handlePasswordChange, handlePortChange, handleHostChange, handleDatabaseChange, handleUriChange, handleFilenameChange, handleFileTypeChange, browseDirectories } = this.props;
+    const { username, password, port, host, database, loadUri, location, fileName, format, handleUsernameChange, handlePasswordChange, handlePortChange, handleHostChange, handleDatabaseChange, handleLoadUriChange, handleFilenameChange, handleFileTypeChange, browseDirectories } = this.props;
     const exportComp = loadExport ? 
       <LoadExport
         fileName = {fileName}
@@ -59,14 +59,14 @@ class Load extends Component {
         port = {port}
         host = {host}
         database = {database}
-        uri = {uri}
+        loadUri = {loadUri}
         dropdownValue = {dropdownValue}
         handleUsernameChange = {handleUsernameChange}
         handlePasswordChange = {handlePasswordChange}
         handleHostChange = {handleHostChange}
         handlePortChange = {handlePortChange}
         handleDatabaseChange = {handleDatabaseChange}
-        handleUriChange = {handleUriChange}
+        handleUriChange = {handleLoadUriChange}
       />
       : null
     return (
