@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Extract from './extract';
 import Transform from '../components/transform';
 import Load from './load';
-import Options from '../components/Options';
+import Options from '../components/options';
 import '../main.css';
 
 const remote = require('electron').remote;
@@ -16,20 +16,20 @@ const client = require('twilio')(
 const sgMail = require('@sendgrid/mail');
 const etl = require('etl-test');
 
-const combineNames = (data) => {
-  const nd = {};
-  nd.id = data.id * 1;
-  nd.full_name = data['first_name'] + ' ' + data['last_name'];
-  nd.email_address = data.email_address;
-  nd.password = data.password;
-  nd.phone = data.phone.replace(/[^0-9]/g, '');
-  nd.street_address = data.street_address;
-  nd.city = data.city;
-  nd.postal_code = data.postal_code;
-  nd.country = data.country;
-  nd['__line'] = (data.id * 1) + 1;
-  return nd;
-};
+// const combineNames = (data) => {
+//   const nd = {};
+//   nd.id = data.id * 1;
+//   nd.full_name = data['first_name'] + ' ' + data['last_name'];
+//   nd.email_address = data.email_address;
+//   nd.password = data.password;
+//   nd.phone = data.phone.replace(/[^0-9]/g, '');
+//   nd.street_address = data.street_address;
+//   nd.city = data.city;
+//   nd.postal_code = data.postal_code;
+//   nd.country = data.country;
+//   nd['__line'] = (data.id * 1) + 1;
+//   return nd;
+// };
 
 
 class Jobs extends Component {
@@ -51,6 +51,10 @@ class Jobs extends Component {
       location: '',
       fileName: '',
       format: '',
+      dependencies: '',
+      code: '// type your code...',
+      script: '',
+
     }
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
@@ -65,6 +69,9 @@ class Jobs extends Component {
     this.handleLoadUriChange = this.handleLoadUriChange.bind(this);
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
+    this.onCodeChange = this.onCodeChange.bind(this);
+    this.handleTransformClick = this.handleTransformClick.bind(this);
+    this.handleDependencyChange = this.handleDependencyChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
     this.browseDirectories = this.browseDirectories.bind(this);
     this.startEtl = this.startEtl.bind(this);
@@ -196,6 +203,26 @@ class Jobs extends Component {
       console.log('format is ', this.state.format)
     }
 
+    onCodeChange(newValue) {
+      console.log('onCodeChange', newValue);
+      this.setState({code: newValue
+      });
+    }
+
+    handleTransformClick(){
+      const newCode = this.state.code
+      console.log('handleClick');
+      this.setState({
+      script: newCode});
+    }
+
+    handleDependencyChange(e){
+      console.log(e.target.value);
+      this.setState({
+          dependencies: e.target.value
+        });
+  }
+
     browseFiles() {
       dialog.showOpenDialog({ 
         properties: ['openFile'] 
@@ -223,22 +250,25 @@ class Jobs extends Component {
     }
 
     startEtl() {
-      const { extractUri, loadUri, filePath, fileName } = this.state;
+      const { extractUri, loadUri, filePath, fileName, script } = this.state;
+      const scriptFunc = new Function('data', script.substring(script.indexOf('{') + 1, script.lastIndexOf('}')));
+
       console.log('extractUri is ', extractUri)
       console.log('loadUri is ', loadUri)
       console.log('filePath is ', filePath)
       console.log('fileName is ', fileName)
       console.log('inside startEtl');
+      console.log('scriptFunc is ', scriptFunc);
       if (extractUri.length > 0) {
         if (loadUri.length > 0) {
           new etl()
-          .simple(extractUri, combineNames, loadUri, 'my_database')
+          .simple(extractUri, scriptFunc, loadUri, 'my_database')
           .combine()
           .start()
         }
         else {
           new etl()
-          .simple(extractUri, combineNames, fileName, 'my_database')
+          .simple(extractUri, scriptFunc, fileName, 'my_database')
           .combine()
           .start()
         }
@@ -246,13 +276,13 @@ class Jobs extends Component {
       if (filePath.length > 0) {
         if (loadUri.length > 0) {
           new etl()
-          .simple(filePath, combineNames, loadUri, 'my_database')
+          .simple(filePath, scriptFunc, loadUri, 'my_database')
           .combine()
           .start()
         }
         else {
           new etl()
-          .simple(filePath, combineNames, fileName, 'my_database')
+          .simple(filePath, scriptFunc, fileName, 'my_database')
           .combine()
           .start()
         }
@@ -275,7 +305,10 @@ class Jobs extends Component {
       filePath,
       location,
       fileName,
-      format } = this.state;
+      format,
+      dependencies,
+      code,
+      script } = this.state;
     return (
       <div>
         <div className='jobs-container'>
@@ -295,7 +328,14 @@ class Jobs extends Component {
             handleExtractUriChange = {this.handleExtractUriChange}
             browseFiles = {this.browseFiles}
           />
-          <Transform />
+          <Transform 
+            dependencies = {dependencies}
+            code = {code}
+            script = {script}
+            onCodeChange = {this.onCodeChange}
+            handleTransformClick = {this.handleTransformClick}
+            handleDependencyChange = {this.handleDependencyChange}
+          />
           <Load 
              username = {username}
              password = {password}
