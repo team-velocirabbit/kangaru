@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Jobs from './containers/jobs';
 import Queue from './components/queue';
 import ReactDOM from 'react-dom';
+import './index.html';
 import './main.css';
-
 
 class App extends Component {
   render(){
@@ -16,9 +16,7 @@ class App extends Component {
                 <div className="queue">
                     <Queue />
                 </div>  
-            </div>
-            
-            
+            </div> 
         );
     };
 };
