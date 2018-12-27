@@ -1,19 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Jobs from './containers/jobs';
 import Queue from './components/queue';
 import ReactDOM from 'react-dom';
 import './index.html';
 import './main.css';
-import * as monaco from 'monaco-editor';
-
-monaco.editor.create(document.getElementById('app'), {
-    value: [
-      'function x() {',
-      '\tconsole.log("Hello world!");',
-      '}'
-    ].join('\n'),
-    language: 'javascript'
-  });
 
 class App extends Component {
   render(){
