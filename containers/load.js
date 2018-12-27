@@ -21,6 +21,7 @@ class Load extends Component {
       host: '',
       port: null,
       database: '',
+      uri: '',
       fileName: '',
       location: '',
       format: '',
@@ -32,6 +33,7 @@ class Load extends Component {
     this.handleHostChange = this.handleHostChange.bind(this);
     this.handlePortChange = this.handlePortChange.bind(this);
     this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
+    this.handleUriChange = this.handleUriChange.bind(this);
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
     this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
@@ -82,6 +84,12 @@ class Load extends Component {
     this.setState({
       database: e.target.value,
     });
+  }
+
+  handleUriChange(e) {
+    this.setState({
+      uri: e.target.value,
+    })
   }
 
   handleFilenameChange(e) {

@@ -21,6 +21,7 @@ class Extract extends Component {
       host: '',
       port: null,
       database: '',
+      uri: '',
       filePath: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
@@ -29,6 +30,7 @@ class Extract extends Component {
     this.handleHostChange = this.handleHostChange.bind(this);
     this.handlePortChange = this.handlePortChange.bind(this);
     this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
+    this.handleUriChange = this.handleUriChange.bind(this);
     // this.handleFilePathChange = this.handleFilePathChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
 }
@@ -82,6 +84,12 @@ class Extract extends Component {
     });
   }
 
+  handleUriChange(e) {
+    this.setState({
+      uri: e.target.value,
+    })
+  }
+
   browseFiles() {
     dialog.showOpenDialog({ 
       properties: ['openFile'] 
@@ -115,6 +123,7 @@ class Extract extends Component {
         handleHostChange = {this.handleHostChange}
         handlePortChange = {this.handlePortChange}
         handleDatabaseChange = {this.handleDatabaseChange}
+        handleUriChange = {this.handleUriChange}
         dropdownValue = {dropdownValue}
       />
       : null

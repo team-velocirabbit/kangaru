@@ -9,6 +9,7 @@ const Options = (props) => {
     handleSelection,
     handleEmailChange,
     handlePhoneChange,
+    handleNotifications
   } = props;
     return (
       <div>
@@ -31,7 +32,7 @@ const Options = (props) => {
             <input
             type='checkbox'
             value='text'
-            defaultChecked='false'
+            defaultChecked={textCheck}
             onChange={handleSelection}
             />
             <input
@@ -39,7 +40,7 @@ const Options = (props) => {
             placeholder='Receive text notifications about this job'
             onChange={handlePhoneChange}
             />
-            <button>Start</button>
+            <button onClick={handleNotifications}>Start</button>
         </span>
       </div>
     );
