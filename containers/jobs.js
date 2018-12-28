@@ -16,21 +16,20 @@ const client = require('twilio')(
 const sgMail = require('@sendgrid/mail');
 const etl = require('etl-test');
 
-// const combineNames = (data) => {
-//   const nd = {};
-//   nd.id = data.id * 1;
-//   nd.full_name = data['first_name'] + ' ' + data['last_name'];
-//   nd.email_address = data.email_address;
-//   nd.password = data.password;
-//   nd.phone = data.phone.replace(/[^0-9]/g, '');
-//   nd.street_address = data.street_address;
-//   nd.city = data.city;
-//   nd.postal_code = data.postal_code;
-//   nd.country = data.country;
-//   nd['__line'] = (data.id * 1) + 1;
-//   return nd;
-// };
-
+const combineNames = (data) => {
+  const nd = {};
+  nd.id = data.id * 1;
+  nd.full_name = data['first_name'] + ' ' + data['last_name'];
+  nd.email_address = data.email_address;
+  nd.password = data.password;
+  nd.phone = data.phone.replace(/[^0-9]/g, '');
+  nd.street_address = data.street_address;
+  nd.city = data.city;
+  nd.postal_code = data.postal_code;
+  nd.country = data.country;
+  nd['__line'] = (data.id * 1) + 1;
+  return nd;
+};
 
 class Jobs extends Component {
   constructor(props) {
@@ -49,6 +48,7 @@ class Jobs extends Component {
       loadUri: '',
       filePath: '',
       location: '',
+      formatDropdownValue: '',
       fileName: '',
       format: '',
       dependencies: '',
@@ -72,6 +72,7 @@ class Jobs extends Component {
     this.onCodeChange = this.onCodeChange.bind(this);
     this.handleTransformClick = this.handleTransformClick.bind(this);
     this.handleDependencyChange = this.handleDependencyChange.bind(this);
+    // this.handleFormatDropdownChange = this.handleFormatDropdownChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
     this.browseDirectories = this.browseDirectories.bind(this);
     this.startEtl = this.startEtl.bind(this);
@@ -91,6 +92,9 @@ class Jobs extends Component {
   }
 
   handleSelection(e) {
+
+console.log('the value of checkbox is ', e.target.value)
+console.log('emailcheck in state ', this.state.emailCheck)
     if (e.target.value === 'email') {
       if (this.state.emailCheck === false) {
         this.setState({
@@ -118,11 +122,13 @@ class Jobs extends Component {
   }
 
   handleNotifications(e) {
+    console.log('youre now about to send an email');
+
     if (this.state.emailCheck) {
       console.log('sending email')
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);     
       const msg = {
-        to: 'kachler@mac.com',
+        to: 'josieglore@gmail.com',
         from: 'kachler@mac.com',
         subject: 'Your Kangaru job has finished',
         text: 'Your Kangaru job has finished',
@@ -194,9 +200,10 @@ class Jobs extends Component {
     }
 
     handleFileTypeChange(e) {
-      const newValue = `${e.value}`
+      // const newValue = e.value
       this.setState({
-        format: newValue,
+        format: e.value,
+        formatDropdownValue: e.value,
       });
       console.log('e value is ', e.value)
       console.log('newValue is ', newValue)
@@ -222,6 +229,12 @@ class Jobs extends Component {
           dependencies: e.target.value
         });
   }
+
+  // handleFormatDropdownChange(e) {
+  //   this.setState({
+  //     format: e.value,
+  //   })
+  // }
 
     browseFiles() {
       dialog.showOpenDialog({ 
@@ -287,6 +300,8 @@ class Jobs extends Component {
           .start()
         }
       }
+      // send notifications
+      this.handleNotifications();
     }
 
   render() {
@@ -355,6 +370,7 @@ class Jobs extends Component {
              handleFilenameChange = {this.handleFilenameChange}
              handleFileTypeChange = {this.handleFileTypeChange}
              browseDirectories = {this.browseDirectories}
+            //  handleFormatDropdownChange = {this.handleFormatDropdownChange}
           />
         </div>
         <div>

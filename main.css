@@ -1,12 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Mukta|Raleway');
 body {
+    background-color:#686766;
+    font-family: 'Raleway', sans-serif;
+    /* font-family: 'Mukta', sans-serif; */
     height: 100%;
-    width: 98%;
+    width: 100%;
     border-style: solid;
     border-color: black;
-    margin-left: 8px;
-
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
 }
 
+.section {
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    border: solid lightgrey 0.1rem;
+    border-radius: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0.8rem 0.5rem;
+    height: 45rem;
+    min-height: 45rem;
+    width: 100%;
+}
+
+.editor {
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-content: center;
+}
+
+h1 {
+    color: #B7B7B6;
+    font-size: 3rem;
+    text-align: center;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+}
+
+h2, h3 { 
+    font-size: 1.5rem;
+}
 img {
     height: 50px;
     width: 50px;
@@ -17,18 +56,90 @@ img {
 } */
 
 #app {
+  width: 100%;
+}
+
+#logo {
+    font-size: 1.7rem;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+
+}
+
+#brand {
     display: flex;
-    justify-content: flex;
+    flex-direction: row;
+    padding: 0.2rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.2rem;
+}
+
+#kangarooLogo {
+    width: 3%;
+    height: 3%;;
 }
 
 .queue {
+    margin-top: 0.2rem;
+    width: 99%;
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
     border-style: solid;
-    border-color: yellow;
-    background-color: pink;
-
+    border-color: lightgrey;
+    border-width: 0.1rem;
+    border-radius: 0.4rem;
+    background-color: white;
 }
 
 .jobs-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    width: 100%;
+    margin: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* border: solid white 0.1rem; */
+    border-radius: 0.4rem;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.2rem;
+    margin-left: 0.5rem;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    border: solid lightgrey 0.1rem;
+    border-radius: 0.4rem;
+    padding: 1rem;
+    width: 99%;;
+}
+
+.optionAlign {
+    margin-top: 1.5rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.options p {
+    padding: 0.55rem;
+    color: white;
+}
+
+.options input {
+    background-color: pink;
+    z-index: 1;
+}
+
+.inputField {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 35rem;
+    margin: 0;
+}
+
+.checkbox {
+    padding-top: 2rem;
 }

@@ -13,8 +13,10 @@ app.on('ready', function () {
  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
  //create new window
  mainWindow = new BrowserWindow({
-//    width: width/2,
-//    height: height
+   'width': 1500,
+   'height': 1000,
+   'minHeight': 900,
+   'minWidth': 1100
    // titleBarStyle: 'customButtonsOnHover', frame: false
  });
  //Load HTML into window

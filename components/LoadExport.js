@@ -15,10 +15,20 @@ const ExtractImport = (props) => {
     handleFileTypeChange,
     location, 
     format,
+    // handleFormatChange,
   } = props;
   return (
     <div>
       <br/>
+      <div>
+        File Format: 
+        <Dropdown
+          options={DROPDOWN_OPTIONS} 
+          value={format}
+          onChange={handleFileTypeChange} 
+          placeholder="Select file format"
+        />
+      </div>
       <div>Filename: 
         <input 
           type='text'
@@ -32,15 +42,7 @@ const ExtractImport = (props) => {
           type='text'
           value={location}
         />
-        <button onClick={() => browseDirectories()}>Browse</button>
-      </div>
-      <div>
-        File Format: 
-        <Dropdown
-          options={DROPDOWN_OPTIONS} 
-          onChange={handleFileTypeChange} 
-          placeholder="Select file format"
-        />
+        <button className="btn waves-effect waves-light grey darken-4" onClick={() => browseDirectories()}>Browse</button>
       </div>
     </div>   
   )

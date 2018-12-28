@@ -70,7 +70,7 @@ class Extract extends Component {
       />
       : null
     return (      
-      <div>
+      <div className="section">
         <h1>Extract</h1>
         <Dropdown
           options={DROPDOWN_OPTIONS} 

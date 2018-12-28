@@ -8,7 +8,7 @@ const ExtractImport = (props) => {
       {/* <h2>Import</h2> */}
       <div>
         File Path: <input type="text" value={filePath}/>
-        <button onClick={() => browseFiles()}>Browse</button>
+        <button className="btn waves-effect waves-light grey darken-4" onClick={() => browseFiles()}>Browse</button>
       </div>    
     </div>
     
