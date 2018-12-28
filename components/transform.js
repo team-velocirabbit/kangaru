@@ -11,7 +11,7 @@ const Transform = (props) => {
       handleTransformClick, 
       handleDependencyChange } = props;
   return (
-    <div>
+    <div className="section">
         <h1>Transform</h1>
         <label htmlFor="npmDependencies">NPM Dependencies</label>
         <br/>

@@ -17,8 +17,10 @@ class Load extends Component {
       loadExport: false,
       loadConnect: false,
       dropdownValue: '',
+      // formatDropdownValue: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
+    // this.handleFormatChange = this.handleFormatChange.bind(this);
   }
 
   handleDropdownChange(e) {
@@ -36,10 +38,37 @@ class Load extends Component {
       });
     }
   }
+
+  // handleFormatChange(e) {
+  //   this.setState({
+  //     formatDropdownValue: e.value;
+  //   })
+  // }
+
     
   render() {
     const { loadExport, loadConnect, dropdownValue } = this.state;
-    const { username, password, port, host, database, loadUri, location, fileName, format, handleUsernameChange, handlePasswordChange, handlePortChange, handleHostChange, handleDatabaseChange, handleLoadUriChange, handleFilenameChange, handleFileTypeChange, browseDirectories } = this.props;
+    const { 
+      username, 
+      password, 
+      port, 
+      host, 
+      database, 
+      loadUri, 
+      location, 
+      fileName, 
+      format, 
+      handleUsernameChange, 
+      handlePasswordChange, 
+      handlePortChange, 
+      handleHostChange, 
+      handleDatabaseChange, 
+      handleLoadUriChange, 
+      handleFilenameChange, 
+      handleFileTypeChange, 
+      browseDirectories, 
+      // handleFormatChange,
+   } = this.props;
     const exportComp = loadExport ? 
       <LoadExport
         fileName = {fileName}
@@ -49,6 +78,7 @@ class Load extends Component {
         handleFilenameChange = {handleFilenameChange}
         handleFileTypeChange = {handleFileTypeChange}
         browseDirectories = {browseDirectories}
+        // handleFormatChange = {handleFormatChange}
       
       />
       : null
@@ -70,7 +100,7 @@ class Load extends Component {
       />
       : null
     return (
-      <div>
+      <div className="section">
         <h1>Load</h1>
         <Dropdown
           options={DROPDOWN_OPTIONS} 

@@ -9,7 +9,10 @@ class App extends Component {
   render(){
         return (
             <div className="mainContainer">
-                <img id="kangarooLogo" src="https://www.naukrinama.com/stressbuster/wp-content/uploads/2018/08/ilustracion-del-canguro-de-dibujos-animados_29937-1176.jpg" alt="kangaru logo"/>
+                <span id="brand">
+                   <img id="kangarooLogo" src="https://bit.ly/2BJJehs" alt="kangaru logo"/>
+                   <p id='logo'>Kangaru</p>
+                </span>
                 <div className="jobsContainer">
                     <Jobs />
                 </div>  

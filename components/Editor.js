@@ -27,9 +27,9 @@ constructor(props) {
       selectOnLineNumbers: true
     };
     return (
-      <div>
+      <div className="editor">
         <MonacoEditor
-          width="400"
+          width="100%"
           height="400"
           language="javascript"
           theme="vs-dark"
@@ -38,7 +38,7 @@ constructor(props) {
           onChange={onCodeChange}
           editorDidMount={this.editorDidMount}
         />
-        <button onClick={() => handleTransformClick()}>Save</button>
+        <button className="btn waves-effect waves-light green darken-1" onClick={() => handleTransformClick()}>Save</button>
       </div>
     );
   }
