@@ -58,13 +58,14 @@ class Load extends Component {
       location, 
       fileName, 
       format, 
-      handleUsernameChange, 
-      handlePasswordChange, 
-      handlePortChange, 
-      handleHostChange, 
-      handleDatabaseChange, 
+      // handleUsernameChange, 
+      // handlePasswordChange, 
+      // handlePortChange, 
+      // handleHostChange, 
+      // handleDatabaseChange, 
+      handleInputChange,
       handleLoadUriChange, 
-      handleFilenameChange, 
+      // handleFilenameChange, 
       handleFileTypeChange, 
       browseDirectories, 
       // handleFormatChange,
@@ -75,7 +76,8 @@ class Load extends Component {
         location = {location}
         format = {format}
         dropdownValue = {dropdownValue}
-        handleFilenameChange = {handleFilenameChange}
+        handleInputChange = {handleInputChange}
+        // handleFilenameChange = {handleFilenameChange}
         handleFileTypeChange = {handleFileTypeChange}
         browseDirectories = {browseDirectories}
         // handleFormatChange = {handleFormatChange}
@@ -91,11 +93,12 @@ class Load extends Component {
         database = {database}
         loadUri = {loadUri}
         dropdownValue = {dropdownValue}
-        handleUsernameChange = {handleUsernameChange}
-        handlePasswordChange = {handlePasswordChange}
-        handleHostChange = {handleHostChange}
-        handlePortChange = {handlePortChange}
-        handleDatabaseChange = {handleDatabaseChange}
+        handleInputChange = {handleInputChange}
+        // handleUsernameChange = {handleUsernameChange}
+        // handlePasswordChange = {handlePasswordChange}
+        // handleHostChange = {handleHostChange}
+        // handlePortChange = {handlePortChange}
+        // handleDatabaseChange = {handleDatabaseChange}
         handleUriChange = {handleLoadUriChange}
       />
       : null

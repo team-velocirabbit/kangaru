@@ -43,10 +43,9 @@ class Extract extends Component {
 
   render() {
     const { extractImport, extractConnect, dropdownValue } = this.state;
-    const { username, password, port, host, database, extractUri, filePath, handleUsernameChange, handlePasswordChange, handlePortChange, handleHostChange, handleDatabaseChange, handleExtractUriChange, browseFiles } = this.props;
+    const { username, password, port, host, database, extractUri, filePath, handleInputChange, handleExtractUriChange, browseFiles } = this.props;
     const importComp = extractImport ? 
       <ExtractImport
-        //   handleFilePathChange = {this.handleFilePathChange}
           browseFiles = {browseFiles}
           filePath = {filePath}
           dropdownValue = {dropdownValue}
@@ -60,11 +59,7 @@ class Extract extends Component {
         host = {host}
         database = {database}
         extractUri = {extractUri}
-        handleUsernameChange = {handleUsernameChange}
-        handlePasswordChange = {handlePasswordChange}
-        handleHostChange = {handleHostChange}
-        handlePortChange = {handlePortChange}
-        handleDatabaseChange = {handleDatabaseChange}
+        handleInputChange = {handleInputChange}
         handleUriChange = {handleExtractUriChange}
         dropdownValue = {dropdownValue}
       />
