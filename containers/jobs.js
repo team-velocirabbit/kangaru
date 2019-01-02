@@ -228,24 +228,16 @@ console.log('emailcheck in state ', this.state.emailCheck)
       this.setState({
           dependencies: e.target.value
         });
-  }
-
-  // handleFormatDropdownChange(e) {
-  //   this.setState({
-  //     format: e.value,
-  //   })
-  // }
+    }
 
     browseFiles() {
       dialog.showOpenDialog({ 
         properties: ['openFile'] 
       },
       (file) => {
-      //   console.log('file is ', file[0])
         this.setState({
           filePath: file[0],
         });
-      //   console.log('filePath is ', this.state.filePath)
       });
     }
 
@@ -254,11 +246,9 @@ console.log('emailcheck in state ', this.state.emailCheck)
         properties: ['openDirectory'] 
       },
       (file) => {
-      //   console.log('file is ', file[0])
         this.setState({
           location: file[0],
         });
-      //   console.log('filePath is ', this.state.filePath)
       });
     }
 
