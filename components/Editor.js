@@ -18,11 +18,10 @@ constructor(props) {
     const {
       code,
       onCodeChange,
-      handleTransformClick
+      handleTransformClick,
+      handleInputChange
     } = this.props;
-    // console.log(this.state.script);
-    // const props = this.props;
-    // const code = this.state.code;
+
     const options = {
       selectOnLineNumbers: true
     };

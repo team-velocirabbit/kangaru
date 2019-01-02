@@ -11,7 +11,8 @@ const ExtractImport = (props) => {
   const { 
     browseDirectories, 
     fileName, 
-    handleFilenameChange, 
+    handleInputChange,
+    // handleFilenameChange, 
     handleFileTypeChange,
     location, 
     format,
@@ -31,8 +32,9 @@ const ExtractImport = (props) => {
       </div>
       <div>Filename: 
         <input 
+          id='filename'
           type='text'
-          onChange = {handleFilenameChange} 
+          onChange = {handleInputChange} 
           placeholder = 'What will your file be called?' 
           value={fileName}
         />
