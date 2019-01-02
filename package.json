@@ -9,7 +9,6 @@
   "author": "Josie Glore, Mario Granberri, Jae Lee, Tim Kachler",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^4.0.0",
     "html-loader": "^0.5.5"
   },
   "description": "",
