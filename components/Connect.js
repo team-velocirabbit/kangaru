@@ -1,6 +1,5 @@
 import React from 'react';
 
-// testing 123
 const Connect = (props) => {
   const { 
     username,
