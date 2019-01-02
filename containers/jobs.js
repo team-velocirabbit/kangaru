@@ -5,74 +5,50 @@ import Load from './load';
 import Options from '../components/options';
 import '../main.css';
 
+const sgMail = require('@sendgrid/mail');
+const etl = require('etl-test');
 const remote = require('electron').remote;
 const { dialog } = remote;
 
 require('dotenv').config();
 const client = require('twilio')(
   process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
+  process.env.TWILIO_AUTH_TOKEN,
 );
-const sgMail = require('@sendgrid/mail');
-const etl = require('etl-test');
-
-const combineNames = (data) => {
-  const nd = {};
-  nd.id = data.id * 1;
-  nd.full_name = data['first_name'] + ' ' + data['last_name'];
-  nd.email_address = data.email_address;
-  nd.password = data.password;
-  nd.phone = data.phone.replace(/[^0-9]/g, '');
-  nd.street_address = data.street_address;
-  nd.city = data.city;
-  nd.postal_code = data.postal_code;
-  nd.country = data.country;
-  nd['__line'] = (data.id * 1) + 1;
-  return nd;
-};
 
 class Jobs extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      emailCheck: false,
-      email: '',
-      textCheck: false,
-      phoneNumber: '',
-      username: '',
-      password: '',
-      host: '',
-      port: null,
-      database: '',
-      extractUri: '',
-      loadUri: '',
-      filePath: '',
-      location: '',
-      formatDropdownValue: '',
-      fileName: '',
-      format: '',
-      dependencies: '',
-      code: '// type your code...',
-      script: '',
+    const { state } = this.props;
+    this.state = {      
+      emailCheck: this.props.state.emailCheck ? this.props.state.emailCheck : false,
+      email: this.props.state.email ? this.props.state.email : '',
+      textCheck: this.props.state.textCheck ? this.props.state.textCheck : false,
+      phoneNumber: this.props.state.phoneNumber ? this.props.state.phoneNumber : '',
+      username: this.props.state.username ? this.props.state.username : '',
+      password: this.props.state.password ? this.props.state.password : '',
+      host: this.props.state.host ? this.props.state.host : '',
+      port: this.props.state.port ? this.props.state.port : null,
+      database: this.props.state.database ? this.props.state.database : '',
+      extractUri: this.props.state.extractUri ? this.props.state.extractUri : '',
+      loadUri: this.props.state.loadUri ? this.props.state.loadUri : '',
+      filePath: this.props.state.filePath ? this.props.state.filePath : '',
+      location: this.props.state.location ? this.props.state.location : '',
+      fileName: this.props.state.fileName ? this.props.state.fileName : '',
+      format: this.props.state.format ? this.props.state.format : '',
+      dependencies: this.props.state.dependencies ? this.props.state.dependencies : '',
+      code: this.props.state.code ? this.props.state.code : 'const transform = (data) => { \n//write your code here \n}',
+      script: this.props.state.script ? this.props.state.script : '',
+    };
 
-    }
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePhoneChange = this.handlePhoneChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelection = this.handleSelection.bind(this);
     this.handleNotifications = this.handleNotifications.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleHostChange = this.handleHostChange.bind(this);
-    this.handlePortChange = this.handlePortChange.bind(this);
-    this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
     this.handleExtractUriChange = this.handleExtractUriChange.bind(this);
     this.handleLoadUriChange = this.handleLoadUriChange.bind(this);
-    this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
     this.handleTransformClick = this.handleTransformClick.bind(this);
-    this.handleDependencyChange = this.handleDependencyChange.bind(this);
-    // this.handleFormatDropdownChange = this.handleFormatDropdownChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
     this.browseDirectories = this.browseDirectories.bind(this);
     this.startEtl = this.startEtl.bind(this);
@@ -83,6 +59,7 @@ class Jobs extends Component {
       email: e.target.value,
     });
     console.log('email is ', this.state.email)
+    console.log('e is ', e.target)
   }
 
   handlePhoneChange(e) {
@@ -92,9 +69,6 @@ class Jobs extends Component {
   }
 
   handleSelection(e) {
-
-console.log('the value of checkbox is ', e.target.value)
-console.log('emailcheck in state ', this.state.emailCheck)
     if (e.target.value === 'email') {
       if (this.state.emailCheck === false) {
         this.setState({
@@ -149,37 +123,22 @@ console.log('emailcheck in state ', this.state.emailCheck)
      };
     }
 
-    handleUsernameChange(e) {
-      this.setState({
-        username: e.target.value,
-      });
+    handleInputChange(e) {
+      let obj;
+      if (e.target.id === 'email') obj = { email: e.target.value };
+      if (e.target.id === 'text') obj = { phoneNumber: e.target.value };
+      if (e.target.id === 'username') obj = { username: e.target.value };
+      if (e.target.id === 'password') obj = { password: e.target.value };
+      if (e.target.id === 'port') obj = { port: e.target.value };
+      if (e.target.id === 'host') obj = { host: e.target.value };
+      if (e.target.id === 'database') obj = { database: e.target.value };
+      if (e.target.id === 'filename') obj = { fileName: e.target.value };
+      if (e.target.id === 'npmDependencies') obj = { dependencies: e.target.value };
+      console.log('database is ', e.target.value);
+
+      this.setState(obj);
     }
 
-    handlePasswordChange(e) {
-      this.setState({
-        password: e.target.value,
-      });
-    }
-  
-    handleHostChange(e) {
-      this.setState({
-        host: e.target.value,
-      });
-    }
-  
-    handlePortChange(e) {
-      console.log('port is ', e.target.value);
-      this.setState({
-        port: e.target.value,
-      });
-    }
-  
-    handleDatabaseChange(e) {
-      this.setState({
-        database: e.target.value,
-      });
-    }
-  
     handleExtractUriChange(e) {
       this.setState({
         extractUri: e.target.value,
@@ -192,22 +151,12 @@ console.log('emailcheck in state ', this.state.emailCheck)
       })
     }
 
-    handleFilenameChange(e) {
-      this.setState({
-        fileName: e.target.value,
-      });
-      console.log('filename is ', this.state.fileName);
-    }
-
     handleFileTypeChange(e) {
-      // const newValue = e.value
+      console.log('filetype is ', e.target.id)
       this.setState({
         format: e.value,
         formatDropdownValue: e.value,
       });
-      console.log('e value is ', e.value)
-      console.log('newValue is ', newValue)
-      console.log('format is ', this.state.format)
     }
 
     onCodeChange(newValue) {
@@ -216,36 +165,20 @@ console.log('emailcheck in state ', this.state.emailCheck)
       });
     }
 
-    handleTransformClick(){
+    handleTransformClick() {
       const newCode = this.state.code
-      console.log('handleClick');
-      this.setState({
-      script: newCode});
+      console.log('new code is ', newCode);
+      this.setState({ script: newCode });
     }
-
-    handleDependencyChange(e){
-      console.log(e.target.value);
-      this.setState({
-          dependencies: e.target.value
-        });
-  }
-
-  // handleFormatDropdownChange(e) {
-  //   this.setState({
-  //     format: e.value,
-  //   })
-  // }
 
     browseFiles() {
       dialog.showOpenDialog({ 
         properties: ['openFile'] 
       },
       (file) => {
-      //   console.log('file is ', file[0])
         this.setState({
           filePath: file[0],
         });
-      //   console.log('filePath is ', this.state.filePath)
       });
     }
 
@@ -254,24 +187,17 @@ console.log('emailcheck in state ', this.state.emailCheck)
         properties: ['openDirectory'] 
       },
       (file) => {
-      //   console.log('file is ', file[0])
         this.setState({
           location: file[0],
         });
-      //   console.log('filePath is ', this.state.filePath)
       });
     }
 
     startEtl() {
       const { extractUri, loadUri, filePath, fileName, script } = this.state;
-      const scriptFunc = new Function('data', script.substring(script.indexOf('{') + 1, script.lastIndexOf('}')));
-
-      console.log('extractUri is ', extractUri)
-      console.log('loadUri is ', loadUri)
-      console.log('filePath is ', filePath)
-      console.log('fileName is ', fileName)
-      console.log('inside startEtl');
-      console.log('scriptFunc is ', scriptFunc);
+      const newScript = script.substring(script.indexOf('{') + 1, script.lastIndexOf('}'));
+      const scriptFunc = new Function('data', newScript);
+           
       if (extractUri.length > 0) {
         if (loadUri.length > 0) {
           new etl()
@@ -335,11 +261,7 @@ console.log('emailcheck in state ', this.state.emailCheck)
             database = {database}
             extractUri = {extractUri}
             filePath = {filePath}
-            handleUsernameChange = {this.handleUsernameChange}
-            handlePasswordChange = {this.handlePasswordChange}
-            handlePortChange = {this.handlePortChange}
-            handleHostChange = {this.handleHostChange}
-            handleDatabaseChange = {this.handleDatabaseChange}
+            handleInputChange={this.handleInputChange}
             handleExtractUriChange = {this.handleExtractUriChange}
             browseFiles = {this.browseFiles}
           />
@@ -349,7 +271,7 @@ console.log('emailcheck in state ', this.state.emailCheck)
             script = {script}
             onCodeChange = {this.onCodeChange}
             handleTransformClick = {this.handleTransformClick}
-            handleDependencyChange = {this.handleDependencyChange}
+            handleInputChange = {this.handleInputChange}
           />
           <Load 
              username = {username}
@@ -361,16 +283,10 @@ console.log('emailcheck in state ', this.state.emailCheck)
              location = {location}
              fileName = {fileName}
              format = {format}
-             handleUsernameChange = {this.handleUsernameChange}
-             handlePasswordChange = {this.handlePasswordChange}
-             handlePortChange = {this.handlePortChange}
-             handleHostChange = {this.handleHostChange}
-             handleDatabaseChange = {this.handleDatabaseChange}
+             handleInputChange = {this.handleInputChange}
              handleLoadUriChange = {this.handleLoadUriChange}
-             handleFilenameChange = {this.handleFilenameChange}
              handleFileTypeChange = {this.handleFileTypeChange}
              browseDirectories = {this.browseDirectories}
-            //  handleFormatDropdownChange = {this.handleFormatDropdownChange}
           />
         </div>
         <div>
@@ -385,8 +301,7 @@ console.log('emailcheck in state ', this.state.emailCheck)
             fileName = {fileName}
             startEtl = {this.startEtl}
             handleSelection = {this.handleSelection}
-            handleEmailChange = {this.handleEmailChange}
-            handlePhoneChange = {this.handlePhoneChange}
+            handleInputChange = {this.handleInputChange}
             handleNotifications = {this.handleNotifications}
           />
         </div>

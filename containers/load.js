@@ -17,10 +17,8 @@ class Load extends Component {
       loadExport: false,
       loadConnect: false,
       dropdownValue: '',
-      // formatDropdownValue: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
-    // this.handleFormatChange = this.handleFormatChange.bind(this);
   }
 
   handleDropdownChange(e) {
@@ -38,13 +36,6 @@ class Load extends Component {
       });
     }
   }
-
-  // handleFormatChange(e) {
-  //   this.setState({
-  //     formatDropdownValue: e.value;
-  //   })
-  // }
-
     
   render() {
     const { loadExport, loadConnect, dropdownValue } = this.state;
@@ -58,16 +49,10 @@ class Load extends Component {
       location, 
       fileName, 
       format, 
-      handleUsernameChange, 
-      handlePasswordChange, 
-      handlePortChange, 
-      handleHostChange, 
-      handleDatabaseChange, 
+      handleInputChange,
       handleLoadUriChange, 
-      handleFilenameChange, 
       handleFileTypeChange, 
       browseDirectories, 
-      // handleFormatChange,
    } = this.props;
     const exportComp = loadExport ? 
       <LoadExport
@@ -75,11 +60,9 @@ class Load extends Component {
         location = {location}
         format = {format}
         dropdownValue = {dropdownValue}
-        handleFilenameChange = {handleFilenameChange}
+        handleInputChange = {handleInputChange}
         handleFileTypeChange = {handleFileTypeChange}
-        browseDirectories = {browseDirectories}
-        // handleFormatChange = {handleFormatChange}
-      
+        browseDirectories = {browseDirectories}      
       />
       : null
     const connectComp = loadConnect ?
@@ -89,13 +72,9 @@ class Load extends Component {
         port = {port}
         host = {host}
         database = {database}
-        loadUri = {loadUri}
+        uri = {loadUri}
         dropdownValue = {dropdownValue}
-        handleUsernameChange = {handleUsernameChange}
-        handlePasswordChange = {handlePasswordChange}
-        handleHostChange = {handleHostChange}
-        handlePortChange = {handlePortChange}
-        handleDatabaseChange = {handleDatabaseChange}
+        handleInputChange = {handleInputChange}
         handleUriChange = {handleLoadUriChange}
       />
       : null

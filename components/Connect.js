@@ -2,16 +2,13 @@ import React from 'react';
 
 const Connect = (props) => {
   const { 
-    // username, 
-    // password, 
-    // host, 
-    // port, 
-    // database, 
-    handleUsernameChange, 
-    handlePasswordChange, 
-    handleHostChange, 
-    handlePortChange, 
-    handleDatabaseChange,
+    username,
+    password,
+    host,
+    port,
+    database,
+    uri,
+    handleInputChange,
     handleUriChange,
   } = props;
   return (
@@ -24,7 +21,8 @@ const Connect = (props) => {
           id="username"
           className="validate col s12"
           type='text'
-          onChange={handleUsernameChange}
+          value={username}
+          onChange={handleInputChange}
           />
           <label for="username">Username</label>
         </div>
@@ -34,17 +32,30 @@ const Connect = (props) => {
           id="password"
           className="validate col s12"
           type='password'
-          onChange={handlePasswordChange}
+          value={password}
+          onChange={handleInputChange}
           />
           <label for="password">Password</label>
         </div>
 
         <div className="input-field col s12">
           <input
+          id="host"
+          className="validate col s12"
+          type="text"
+          value={host}
+          onChange={handleInputChange}
+          />
+          <label for="host">Host</label>
+        </div>
+
+        <div className="input-field col s12">
+          <input
           id="port"
           className="validate col s12"
-          type='password'
-          onChange={handlePortChange}
+          type='text'
+          value={port}
+          onChange={handleInputChange}
           />
           <label for="port">Port</label>
         </div>
@@ -54,29 +65,23 @@ const Connect = (props) => {
           id="database"
           className="validate col s12"
           type='text'
-          onChange={handleDatabaseChange}
+          value={database}
+          onChange={handleInputChange}
           />
           <label for="database">Database</label>
         </div>
         <br/>
-        
+
          <div className="input-field col s12">
           <input
-          id="altDatabase"
+          id="uri"
           className="validate col s12"
           type='text'
+          value={uri}
           onChange={handleUriChange}
           />
-          <label for="altDatabase">OR enter database URI here</label>
+          <label className="active" for="uri">OR enter database URI here</label>
         </div>
-      {/* <div>Username: <input type="text" onChange={handleUsernameChange}/></div> */}
-      {/* <div>Password: <input type="password" onChange={handlePasswordChange}/></div> */}
-      {/* <div>Host: <input type="text" onChange={handleHostChange}/></div> */}
-      {/* <div>Port: <input type="text" onChange={handlePortChange}/></div> */}
-      {/* <div>Database: <input type="text" onChange={handleDatabaseChange}/></div> */}
-      <br/>
-      {/* <div>Or enter your database URI here! <input type="text" onChange={handleUriChange}/></div> */}
-      {/* <button className="btn waves-effect waves-light green darken-1">Submit</button> */}
     </div>
   )
 }
