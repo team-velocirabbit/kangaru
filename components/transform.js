@@ -14,8 +14,6 @@ const Transform = (props) => {
     <div className="section">
         <h1>Transform</h1>
         <label htmlFor="npmDependencies">NPM Dependencies</label>
-        {/* <br/>
-        <input type="text" id="npmDependencies" name="NPM Dependencies" onChange={handleDependencyChange} placeholder="Enter your dependencies..."></input> */}
         <br/>
         <Editor 
           code = {code}

@@ -58,7 +58,7 @@ class Extract extends Component {
         port = {port}
         host = {host}
         database = {database}
-        extractUri = {extractUri}
+        uri = {extractUri}
         handleInputChange = {handleInputChange}
         handleUriChange = {handleExtractUriChange}
         dropdownValue = {dropdownValue}

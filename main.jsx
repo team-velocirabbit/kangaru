@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Closable from './containers/Closable'
 import Jobs from './containers/jobs';
 import Queue from './components/queue';
 import ReactDOM from 'react-dom';
@@ -13,9 +14,12 @@ class App extends Component {
                    <img id="kangarooLogo" src="https://bit.ly/2BJJehs" alt="kangaru logo"/>
                    <p id='logo'>Kangaru</p>
                 </span>
-                <div className="jobsContainer">
+                <div>
+                    <Closable />
+                </div>
+                {/* <div className="jobsContainer">
                     <Jobs />
-                </div>  
+                </div>   */}
                 <div className="queue">
                     <Queue />
                 </div>  

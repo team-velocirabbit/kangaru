@@ -19,44 +19,36 @@ const client = require('twilio')(
 class Jobs extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      emailCheck: false,
-      email: '',
-      textCheck: false,
-      phoneNumber: '',
-      username: '',
-      password: '',
-      host: '',
-      port: null,
-      database: '',
-      extractUri: '',
-      loadUri: '',
-      filePath: '',
-      location: '',
-      fileName: '',
-      format: '',
-      dependencies: '',
-      code: 'const transform = (data) => { \n//write your code here \n}',
-      script: '',
+    const { state } = this.props;
+    this.state = {      
+      emailCheck: this.props.state.emailCheck ? this.props.state.emailCheck : false,
+      email: this.props.state.email ? this.props.state.email : '',
+      textCheck: this.props.state.textCheck ? this.props.state.textCheck : false,
+      phoneNumber: this.props.state.phoneNumber ? this.props.state.phoneNumber : '',
+      username: this.props.state.username ? this.props.state.username : '',
+      password: this.props.state.password ? this.props.state.password : '',
+      host: this.props.state.host ? this.props.state.host : '',
+      port: this.props.state.port ? this.props.state.port : null,
+      database: this.props.state.database ? this.props.state.database : '',
+      extractUri: this.props.state.extractUri ? this.props.state.extractUri : '',
+      loadUri: this.props.state.loadUri ? this.props.state.loadUri : '',
+      filePath: this.props.state.filePath ? this.props.state.filePath : '',
+      location: this.props.state.location ? this.props.state.location : '',
+      fileName: this.props.state.fileName ? this.props.state.fileName : '',
+      format: this.props.state.format ? this.props.state.format : '',
+      dependencies: this.props.state.dependencies ? this.props.state.dependencies : '',
+      code: this.props.state.code ? this.props.state.code : 'const transform = (data) => { \n//write your code here \n}',
+      script: this.props.state.script ? this.props.state.script : '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    //this.handleEmailChange = this.handleEmailChange.bind(this);
-    //this.handlePhoneChange = this.handlePhoneChange.bind(this);
     this.handleSelection = this.handleSelection.bind(this);
     this.handleNotifications = this.handleNotifications.bind(this);
-    //this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    //this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    //this.handleHostChange = this.handleHostChange.bind(this);
-    //this.handlePortChange = this.handlePortChange.bind(this);
-    //this.handleDatabaseChange = this.handleDatabaseChange.bind(this);
     this.handleExtractUriChange = this.handleExtractUriChange.bind(this);
     this.handleLoadUriChange = this.handleLoadUriChange.bind(this);
-    //this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
     this.handleTransformClick = this.handleTransformClick.bind(this);
-    //this.handleDependencyChange = this.handleDependencyChange.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
     this.browseDirectories = this.browseDirectories.bind(this);
     this.startEtl = this.startEtl.bind(this);
@@ -147,40 +139,6 @@ class Jobs extends Component {
       this.setState(obj);
     }
 
-    // handleUsernameChange(e) {
-    //   this.setState({
-    //     username: e.target.value,
-    //   });
-    //   console.log('e target is ', e.target.id)
-    // }
-
-    // handlePasswordChange(e) {
-    //   this.setState({
-    //     password: e.target.value,
-    //   });
-    //   console.log('e target is ', e.target)
-    // }
-  
-    // handleHostChange(e) {
-    //   this.setState({
-    //     host: e.target.value,
-    //   });
-    // }
-  
-    // handlePortChange(e) {
-    //   console.log('port is ', e.target.value);
-    //   this.setState({
-    //     port: e.target.value,
-    //   });
-    //   console.log('e target is ', e.target)
-    // }
-  
-    // handleDatabaseChange(e) {
-    //   this.setState({
-    //     database: e.target.value,
-    //   });
-    // }
-  
     handleExtractUriChange(e) {
       this.setState({
         extractUri: e.target.value,
@@ -192,13 +150,6 @@ class Jobs extends Component {
         loadUri: e.target.value,
       })
     }
-
-    // handleFilenameChange(e) {
-    //   this.setState({
-    //     fileName: e.target.value,
-    //   });
-    //   console.log('filename is ', this.state.fileName);
-    // }
 
     handleFileTypeChange(e) {
       console.log('filetype is ', e.target.id)
@@ -220,23 +171,14 @@ class Jobs extends Component {
       this.setState({ script: newCode });
     }
 
-    // handleDependencyChange(e) {
-    //   console.log(e.target.value);
-    //   this.setState({
-    //       dependencies: e.target.value
-    //     });
-    // }
-
     browseFiles() {
       dialog.showOpenDialog({ 
         properties: ['openFile'] 
       },
       (file) => {
-      //   console.log('file is ', file[0])
         this.setState({
           filePath: file[0],
         });
-      //   console.log('filePath is ', this.state.filePath)
       });
     }
 
@@ -245,51 +187,17 @@ class Jobs extends Component {
         properties: ['openDirectory'] 
       },
       (file) => {
-      //   console.log('file is ', file[0])
         this.setState({
           location: file[0],
         });
-      //   console.log('filePath is ', this.state.filePath)
       });
     }
 
     startEtl() {
       const { extractUri, loadUri, filePath, fileName, script } = this.state;
-      
-      
-      
-      console.log('extractUri is ', extractUri)
-      console.log('loadUri is ', loadUri)
-      console.log('filePath is ', filePath)
-      console.log('fileName is ', fileName)
-      console.log('inside startEtl');
-      console.log('script is ', script)
-      console.log('first index ', script.indexOf('{'));
-      console.log('last index ', script.indexOf('}'))
       const newScript = script.substring(script.indexOf('{') + 1, script.lastIndexOf('}'));
-      console.log('newScript ', newScript);
       const scriptFunc = new Function('data', newScript);
-      console.log('scriptFunc is ', scriptFunc);
-     
-
-
-      // const combineNames = (data) => {
-      //   const nd = {};
-      //   nd.id = data.id * 1;
-      //   nd.full_name = data['first_name'] + ' ' + data['last_name'];
-      //   nd.email_address = data.email_address;
-      //   nd.password = data.password;
-      //   nd.phone = data.phone.replace(/[^0-9]/g, ‘’);
-      //   nd.street_address = data.street_address;
-      //   nd.city = data.city;
-      //   nd.postal_code = data.postal_code;
-      //   nd.country = data.country;
-      //   nd['__line'] = (data.id * 1) + 1;
-      //   return nd;
-      // };
-
-
-            
+           
       if (extractUri.length > 0) {
         if (loadUri.length > 0) {
           new etl()
@@ -354,11 +262,6 @@ class Jobs extends Component {
             extractUri = {extractUri}
             filePath = {filePath}
             handleInputChange={this.handleInputChange}
-            // handleUsernameChange = {this.handleUsernameChange}
-            //handlePasswordChange = {this.handlePasswordChange}
-            //handlePortChange = {this.handlePortChange}
-            //handleHostChange = {this.handleHostChange}
-            //handleDatabaseChange = {this.handleDatabaseChange}
             handleExtractUriChange = {this.handleExtractUriChange}
             browseFiles = {this.browseFiles}
           />
@@ -369,7 +272,6 @@ class Jobs extends Component {
             onCodeChange = {this.onCodeChange}
             handleTransformClick = {this.handleTransformClick}
             handleInputChange = {this.handleInputChange}
-            //handleDependencyChange = {this.handleDependencyChange}
           />
           <Load 
              username = {username}
@@ -382,13 +284,7 @@ class Jobs extends Component {
              fileName = {fileName}
              format = {format}
              handleInputChange = {this.handleInputChange}
-            //  handleUsernameChange = {this.handleUsernameChange}
-            //  handlePasswordChange = {this.handlePasswordChange}
-            //  handlePortChange = {this.handlePortChange}
-            //  handleHostChange = {this.handleHostChange}
-            //  handleDatabaseChange = {this.handleDatabaseChange}
              handleLoadUriChange = {this.handleLoadUriChange}
-             //handleFilenameChange = {this.handleFilenameChange}
              handleFileTypeChange = {this.handleFileTypeChange}
              browseDirectories = {this.browseDirectories}
           />
@@ -406,8 +302,6 @@ class Jobs extends Component {
             startEtl = {this.startEtl}
             handleSelection = {this.handleSelection}
             handleInputChange = {this.handleInputChange}
-            // handleEmailChange = {this.handleEmailChange}
-            // handlePhoneChange = {this.handlePhoneChange}
             handleNotifications = {this.handleNotifications}
           />
         </div>
