@@ -14,31 +14,15 @@ class Load extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loadExport: false,
-      loadConnect: false,
-      dropdownValue: '',
+    
     };
-    this.handleDropdownChange = this.handleDropdownChange.bind(this);
+    // this.handleDropdownChange = this.handleDropdownChange.bind(this);
   }
 
-  handleDropdownChange(e) {
-    if (e.value === 'Export') {
-      this.setState({
-        loadConnect: false,
-        loadExport: true,
-        dropdownValue: 'Export',
-      });
-    } else if (e.value === 'Connect') {
-      this.setState({
-        loadExport: false,
-        loadConnect: true,
-        dropdownValue: 'Connect',
-      });
-    }
-  }
+  
     
   render() {
-    const { loadExport, loadConnect, dropdownValue } = this.state;
+    // const { loadExport, loadConnect, dropdownValue } = this.state;
     const { 
       username, 
       password, 
@@ -49,17 +33,21 @@ class Load extends Component {
       location, 
       fileName, 
       format, 
+      loadExport,
+      loadConnect,
+      loadDropdownValue,
       handleInputChange,
       handleLoadUriChange, 
       handleFileTypeChange, 
       browseDirectories, 
+      handleLoadDropdownChange,
    } = this.props;
     const exportComp = loadExport ? 
       <LoadExport
         fileName = {fileName}
         location = {location}
         format = {format}
-        dropdownValue = {dropdownValue}
+        loadDropdownValue = {loadDropdownValue}
         handleInputChange = {handleInputChange}
         handleFileTypeChange = {handleFileTypeChange}
         browseDirectories = {browseDirectories}      
@@ -73,7 +61,7 @@ class Load extends Component {
         host = {host}
         database = {database}
         uri = {loadUri}
-        dropdownValue = {dropdownValue}
+        loadDropdownValue = {loadDropdownValue}
         handleInputChange = {handleInputChange}
         handleUriChange = {handleLoadUriChange}
       />
@@ -83,9 +71,9 @@ class Load extends Component {
         <h1>Load</h1>
         <Dropdown
           options={DROPDOWN_OPTIONS} 
-          onChange={this.handleDropdownChange} 
+          onChange={handleLoadDropdownChange} 
           placeholder="Select loading method"
-          value={dropdownValue}
+          value={loadDropdownValue}
         />
         {exportComp}
         {connectComp}

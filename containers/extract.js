@@ -13,9 +13,9 @@ class Extract extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      extractDropdownValue: '',
+      // extractDropdownValue: '',
     };
-    this.handleDropdownChange = this.handleDropdownChange.bind(this);
+    // this.handleDropdownChange = this.handleDropdownChange.bind(this);
     // this.handleFilePathChange = this.handleFilePathChange.bind(this)
 }
 
@@ -40,13 +40,13 @@ class Extract extends Component {
     // const { extractImport, extractConnect } = tprops;
 
   render() {
-    const { extractImport, extractConnect, dropdownValue } = this.state;
-    const { username, password, port, host, database, extractUri, filePath, handleInputChange, handleExtractUriChange, browseFiles } = this.props;
+    // const { extractImport, extractConnect, dropdownValue } = this.state;
+    const { username, password, port, host, database, extractUri, filePath, handleInputChange, handleExtractUriChange, browseFiles, extractConnect, extractImport, extractDropdownValue, handleExtractDropdownChange } = this.props;
     const importComp = extractImport ? 
       <ExtractImport
           browseFiles = {browseFiles}
           filePath = {filePath}
-          dropdownValue = {dropdownValue}
+          extractDropdownValue = {extractDropdownValue}
       />
       : null
     const connectComp = extractConnect ? 
@@ -59,7 +59,7 @@ class Extract extends Component {
         uri = {extractUri}
         handleInputChange = {handleInputChange}
         handleUriChange = {handleExtractUriChange}
-        dropdownValue = {dropdownValue}
+        extractDropdownValue = {extractDropdownValue}
       />
       : null
     return (      
@@ -67,9 +67,9 @@ class Extract extends Component {
         <h1>Extract</h1>
         <Dropdown
           options={DROPDOWN_OPTIONS} 
-          onChange={this.handleDropdownChange} 
+          onChange={handleExtractDropdownChange} 
           placeholder="Select extraction method"
-          value={dropdownValue}
+          value={extractDropdownValue}
         />
         {importComp}
         {connectComp}

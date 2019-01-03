@@ -41,6 +41,10 @@ class Jobs extends Component {
       script: this.props.state.script ? this.props.state.script : '',
       extractImport: this.props.state.extractImport ? this.props.state.extractImport : false,
       extractConnect: this.props.state.extractConnect ? this.props.state.extractConnect : false,
+      extractDropdownValue: this.props.state.extractDropdownValue ? this.props.state.extractDropdownValue : '',
+      loadExport: this.props.state.loadExport ? this.props.state.loadExport : false,
+      loadConnect: this.props.state.loadConnect ? this.props.state.loadConnect : false,
+      loadDropdownValue: this.props.state.loadDropdownValue ? this.props.state.loadDropdownValue : '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -54,6 +58,8 @@ class Jobs extends Component {
     this.browseFiles = this.browseFiles.bind(this);
     this.browseDirectories = this.browseDirectories.bind(this);
     this.startEtl = this.startEtl.bind(this);
+    this.handleExtractDropdownChange = this.handleExtractDropdownChange.bind(this);
+    this.handleLoadDropdownChange = this.handleLoadDropdownChange.bind(this);
   }
 
   handleEmailChange(e) {
@@ -232,6 +238,40 @@ class Jobs extends Component {
       this.handleNotifications();
     }
 
+    handleExtractDropdownChange(e) {
+      if (e.value === 'Import') {
+        this.setState({
+          extractConnect: false,
+          extractImport: true,
+          extractDropdownValue: 'Import',
+        });
+      } else if (e.value === 'Connect') {
+        this.setState({
+          extractImport: false,
+          extractConnect: true,
+          extractDropdownValue: 'Connect',
+        });
+      }
+      console.log('extractImport is ', this.state.extractImport)
+      console.log('extractConnect is ', this.state.extractConnect)
+    }
+
+    handleLoadDropdownChange(e) {
+      if (e.value === 'Export') {
+        this.setState({
+          loadConnect: false,
+          loadExport: true,
+          dropdownValue: 'Export',
+        });
+      } else if (e.value === 'Connect') {
+        this.setState({
+          loadExport: false,
+          loadConnect: true,
+          dropdownValue: 'Connect',
+        });
+      }
+    }
+
   render() {
     const { 
       emailCheck, 
@@ -251,7 +291,13 @@ class Jobs extends Component {
       format,
       dependencies,
       code,
-      script } = this.state;
+      script,
+      extractConnect,
+      extractImport,
+      extractDropdownValue,
+      loadConnect,
+      loadExport,
+      loadDropdownValue } = this.state;
     return (
       <div>
         <div className='jobs-container'>
@@ -263,9 +309,13 @@ class Jobs extends Component {
             database = {database}
             extractUri = {extractUri}
             filePath = {filePath}
+            extractConnect = {extractConnect}
+            extractImport = {extractImport} 
+            extractDropdownValue = {extractDropdownValue}
             handleInputChange={this.handleInputChange}
             handleExtractUriChange = {this.handleExtractUriChange}
             browseFiles = {this.browseFiles}
+            handleExtractDropdownChange = {this.handleExtractDropdownChange}
           />
           <Transform 
             dependencies = {dependencies}
@@ -285,10 +335,14 @@ class Jobs extends Component {
              location = {location}
              fileName = {fileName}
              format = {format}
+             loadConnect = {loadConnect}
+             loadExport = {loadExport}
+             loadDropdownValue = {loadDropdownValue}
              handleInputChange = {this.handleInputChange}
              handleLoadUriChange = {this.handleLoadUriChange}
              handleFileTypeChange = {this.handleFileTypeChange}
              browseDirectories = {this.browseDirectories}
+             handleLoadDropdownChange = {this.handleLoadDropdownChange}
           />
         </div>
         <div>
