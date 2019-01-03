@@ -30,7 +30,7 @@ class Closable extends Component {
     jobsCopy.push({});
     if (jobs.length !== 0) jobsCopy[activeIndex] = this['job' + activeIndex.toString()].state;
 
-    console.log('BEFORE ADDING TAB ', this.state.jobs)
+    // console.log('BEFORE ADDING TAB ', this.state.jobs)
     this.setState({ tabs: newTabs, activeIndex: newTabs.length - 1, jobs: jobsCopy, initialRender: false });
   }
 
@@ -40,7 +40,7 @@ class Closable extends Component {
     jobsCopy[activeIndex] = this['job' + activeIndex.toString()].state;
 
 
-  console.log('current state is ', this.state.jobs)
+  // console.log('current state is ', this.state.jobs)
 
 
     this.setState({ activeIndex: index, jobs: jobsCopy });
@@ -75,11 +75,11 @@ class Closable extends Component {
       tabs.forEach((tab, i) => {
         const closable = tabs.length > 1;
         tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
-        panelTemplate.push(<Panel key={i}> <Jobs ref={(job) => this['job' + i.toString()] = job} state={this.state.jobs[i]} /> </Panel>);
+        panelTemplate.push(<Panel key={i}> <Jobs ref={(job) => this['job' + i.toString()] = job} state={this.state.jobs[i]} name={tab.title} /> </Panel>);
       });
     }
 
-    console.log('JOBS IS ', this.state.jobs)
+    // console.log('JOBS IS ', this.state.jobs)
 
     return (
       <div className="tab">
