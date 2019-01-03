@@ -1,7 +1,8 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
-const etl = require('etl-test');
+const etl = require('rx-etl');
+const MongoClient = require('mongodb').MongoClient;
 
 
 const {
@@ -108,7 +109,7 @@ mainMenuTemplate.push({
 
     if (extractUri.length > 0) {
       if (loadUri.length > 0) {
-        job = new etl()
+        job = new etl()        
         job.simple(extractUri, scriptFunc, loadUri, 'test')
         job.combine()
       }
@@ -132,8 +133,8 @@ mainMenuTemplate.push({
 
       job.observable$.subscribe(
         null, 
-        null,
-        () => event.sender.send('done', name)
+        () => console.error('yoooo'),
+        () => console.log('done!!!!!!')
       );
     }
   });
@@ -141,5 +142,5 @@ mainMenuTemplate.push({
   ipcMain.on('notify', (event, arg) => event.sender.send('notify', 'success'));
 
   ipcMain.on('start', (event, arg) => {
-    event.sender.send('queue', arg);
+    event.sender.send('q', arg);
   });
