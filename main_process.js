@@ -1,15 +1,20 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
+const etl = require('etl-test');
+
+
 const {
  app,
  BrowserWindow,
  Menu,
+ ipcMain
 } = electron;
 
 let mainWindow;
 
 app.on('ready', function () {
+
  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
  //create new window
  mainWindow = new BrowserWindow({
@@ -33,7 +38,10 @@ app.on('ready', function () {
  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
  //Insert the menu
  Menu.setApplicationMenu(mainMenu);
+
 });
+
+
 
 const mainMenuTemplate = [{
  label: 'File',
@@ -82,4 +90,56 @@ mainMenuTemplate.push({
         role: 'reload'
       }
     ]
+  });
+
+  ipcMain.on('etl', (event, arg) => {
+    const {
+      name,
+      extractUri,
+      loadUri,
+      filePath,
+      fileName,
+      script
+    } = arg;
+    
+    const newScript = script.substring(script.indexOf('{') + 1, script.lastIndexOf('}'));
+    const scriptFunc = new Function('data', newScript);
+    let job;
+
+    if (extractUri.length > 0) {
+      if (loadUri.length > 0) {
+        job = new etl()
+        job.simple(extractUri, scriptFunc, loadUri, 'test')
+        job.combine()
+      }
+      else {
+        job = new etl()
+        job.simple(extractUri, scriptFunc, fileName, 'test')
+        job.combine()
+      }
+    }
+    if (filePath.length > 0) {
+      if (loadUri.length > 0) {
+        job = new etl()
+        job.simple(filePath, scriptFunc, loadUri, 'test')
+        job.combine()
+      }
+      else {
+        job = new etl()
+        job.simple(filePath, scriptFunc, fileName, 'test')
+        job.combine()
+      }
+
+      job.observable$.subscribe(
+        null, 
+        null,
+        () => event.sender.send('done', name)
+      );
+    }
+  });
+
+  ipcMain.on('notify', (event, arg) => event.sender.send('notify', 'success'));
+
+  ipcMain.on('start', (event, arg) => {
+    event.sender.send('queue', arg);
   });
