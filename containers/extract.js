@@ -13,9 +13,7 @@ class Extract extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      extractImport: false,
-      extractConnect: false,
-      dropdownValue: '',
+      extractDropdownValue: '',
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     // this.handleFilePathChange = this.handleFilePathChange.bind(this)
@@ -26,13 +24,13 @@ class Extract extends Component {
       this.setState({
         extractConnect: false,
         extractImport: true,
-        dropdownValue: 'Import',
+        extractDropdownValue: 'Import',
       });
     } else if (e.value === 'Connect') {
       this.setState({
         extractImport: false,
         extractConnect: true,
-        dropdownValue: 'Connect',
+        extractDropdownValue: 'Connect',
       });
     }
     console.log('extractImport is ', this.state.extractImport)

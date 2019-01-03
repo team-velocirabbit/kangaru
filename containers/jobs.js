@@ -39,6 +39,8 @@ class Jobs extends Component {
       dependencies: this.props.state.dependencies ? this.props.state.dependencies : '',
       code: this.props.state.code ? this.props.state.code : 'const transform = (data) => { \n//write your code here \n}',
       script: this.props.state.script ? this.props.state.script : '',
+      extractImport: this.props.state.extractImport ? this.props.state.extractImport : false,
+      extractConnect: this.props.state.extractConnect ? this.props.state.extractConnect : false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
