@@ -20,8 +20,8 @@ app.on('ready', function () {
  //create new window
  mainWindow = new BrowserWindow({
    'width': 1500,
-   'height': 1000,
-   'minHeight': 900,
+   'height': 900,
+   'minHeight': 800,
    'minWidth': 1100
    // titleBarStyle: 'customButtonsOnHover', frame: false
  });
