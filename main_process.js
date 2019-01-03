@@ -93,6 +93,7 @@ mainMenuTemplate.push({
     ]
   });
 
+  // starts the etl process, listens to ipcRenderer located in jobs.js in startEtl()
   ipcMain.on('etl', (event, arg) => {
     const {
       name,
@@ -139,8 +140,10 @@ mainMenuTemplate.push({
     }
   });
 
+  // listens to ipcRenderer in queue.js
   ipcMain.on('notify', (event, arg) => event.sender.send('notify', 'success'));
 
+  // listens to  ipcRenderer in jobs.js in startEtl()
   ipcMain.on('start', (event, arg) => {
     event.sender.send('q', arg);
   });
