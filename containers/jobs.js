@@ -10,7 +10,7 @@ import { ipcRenderer } from 'electron';
 
 
 const sgMail = require('@sendgrid/mail');
-const etl = require('etl-test');
+const etl = require('rx-etl');
 const remote = require('electron').remote;
 const { dialog } = remote;
 
