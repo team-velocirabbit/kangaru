@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Tabs, TabList, Tab, PanelList, Panel, ExtraButton } from 'react-tabtab';
+import Popup from 'reactjs-popup';
 import * as customStyle from 'react-tabtab/lib/themes/material-design';
 import Jobs from '../containers/jobs';
 import DefaultTab from '../components/DefaultTab';
+import $ from 'jquery';
 
 class Closable extends Component {
   constructor(props) {
@@ -14,23 +16,27 @@ class Closable extends Component {
       activeIndex: 0,
       // array of state for each job
       jobs: [],
-      initialRender: true
+      initialRender: true,
+      jobName: '',
     };
     this.handleExtraButton = this.handleExtraButton.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleJobChange = this.handleJobChange.bind(this);
   }
   
   handleExtraButton() {
-    const { tabs, jobs, activeIndex } = this.state;
+    const { tabs, jobs, activeIndex, jobName } = this.state;
     let newTabs;
     if (jobs.length === 0 && tabs.length !== 0) newTabs = [{ title: 'New Job'}];
     else newTabs = [...tabs, { title: 'New Job'}];
+
+    console.log('job name is ', this.state.jobName)
+
     const jobsCopy = jobs.slice();
     jobsCopy.push({});
     if (jobs.length !== 0) jobsCopy[activeIndex] = this['job' + activeIndex.toString()].state;
 
-    // console.log('BEFORE ADDING TAB ', this.state.jobs)
     this.setState({ tabs: newTabs, activeIndex: newTabs.length - 1, jobs: jobsCopy, initialRender: false });
   }
 
@@ -61,6 +67,13 @@ class Closable extends Component {
     });
   }
 
+  handleJobChange(e) {
+    this.setState({
+      jobName: e.target.value,
+    })
+  }
+
+
   render() {
     const { tabs, activeIndex, initialRender} = this.state;
     const tabTemplate = [];
@@ -88,13 +101,29 @@ class Closable extends Component {
           onTabChange={this.handleTabChange}
           activeIndex={activeIndex}
           customStyle={customStyle}
-          ExtraButton={ <ExtraButton onClick={this.handleExtraButton}> + </ExtraButton> }>
+          ExtraButton={ 
+            <Popup trigger={<button>+ New Job</button>} position='right center'>
+            <div>
+              <input id='addTab' type='text' onChange={this.handleJobChange}/>
+              <label for='addTab'>Name for this job</label>
+              <ExtraButton onClick={this.handleExtraButton}>Add Job</ExtraButton>
+            </div>
+            </Popup>
+          }
+        >
           <TabList>
             {tabTemplate}
           </TabList>
           <PanelList>
             {panelTemplate}
           </PanelList>
+          {/* <Popup trigger={<button>+</button>} position="right center">
+            <div>
+              <input id='addTab' type='text' onChange={this.handleJobChange}/>
+              <label for='addTab'>Name for this job</label>
+              <ExtraButton onClick={this.handleExtraButton}>Add Job</ExtraButton>
+            </div>
+          </Popup> */}
         </Tabs>
       </div>
     );
@@ -114,6 +143,3 @@ class Closable extends Component {
 //   return data;
 // };
 export default Closable;
-
-
-
