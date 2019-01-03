@@ -28,10 +28,8 @@ class Closable extends Component {
   handleExtraButton() {
     const { tabs, jobs, activeIndex, jobName } = this.state;
     let newTabs;
-    if (jobs.length === 0 && tabs.length !== 0) newTabs = [{ title: 'New Job'}];
-    else newTabs = [...tabs, { title: 'New Job'}];
-
-    console.log('job name is ', this.state.jobName)
+    if (jobs.length === 0 && tabs.length !== 0) newTabs = [{ title: jobName}];
+    else newTabs = [...tabs, { title: jobName}];
 
     const jobsCopy = jobs.slice();
     jobsCopy.push({});
@@ -44,11 +42,6 @@ class Closable extends Component {
     const { activeIndex, jobs } = this.state;
     const jobsCopy = jobs.slice();
     jobsCopy[activeIndex] = this['job' + activeIndex.toString()].state;
-
-
-  // console.log('current state is ', this.state.jobs)
-
-
     this.setState({ activeIndex: index, jobs: jobsCopy });
   }
 
@@ -91,8 +84,6 @@ class Closable extends Component {
         panelTemplate.push(<Panel key={i}> <Jobs ref={(job) => this['job' + i.toString()] = job} state={this.state.jobs[i]} name={tab.title} /> </Panel>);
       });
     }
-
-    // console.log('JOBS IS ', this.state.jobs)
 
     return (
       <div className="tab">
