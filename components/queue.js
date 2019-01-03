@@ -46,11 +46,11 @@ class Queue extends Component {
   }
 
   componentDidMount() {
-    ipcRenderer.on('queue', (event, arg) => {
-      console.log('gonna queue now', arg);
+
+    ipcRenderer.on('q', (event, arg) => {
       const jobs = this.state.jobs.slice();
       jobs.unshift(arg);
-      this.setState(jobs);
+      this.setState({jobs: jobs});
     });
 
     ipcRenderer.on('done', (event, arg) => {
