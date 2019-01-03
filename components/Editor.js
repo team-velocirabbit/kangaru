@@ -5,12 +5,9 @@ import MonacoEditor from 'react-monaco-editor';
 class Editor extends React.Component {
 constructor(props) {
     super(props);
-    this.state = {
-      
-    }
   }
+  
   editorDidMount(editor, monaco) {
-    console.log('editorDidMount', editor);
     editor.focus();
   }    
   
@@ -31,13 +28,13 @@ constructor(props) {
           width="100%"
           height="400"
           language="javascript"
-          theme="vs-dark"
+          theme="vs-light"
           value={code}
           options={options}
           onChange={onCodeChange}
           editorDidMount={this.editorDidMount}
         />
-        <button className="btn waves-effect waves-light green darken-1" onClick={() => handleTransformClick()}>Save</button>
+        <button className="btn waves-effect waves-light green darken-1" style={{  width: '100%', fontSize: '0.8rem' }} onClick={() => handleTransformClick()}>Save</button>
       </div>
     );
   }

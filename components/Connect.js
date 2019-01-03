@@ -14,9 +14,23 @@ const Connect = (props) => {
   return (
     <div>
       <br/>
-      <h3>Please enter your database credentials</h3>
+      <div className="input-field col s12">
+        <input
+        id="uri"
+        className="validate col s12"
+        type='text'
+        value={uri}
+        onChange={handleUriChange}
+        />
+        <label className="active" for="uri">Enter database URI here</label>
+      </div>
+    </div>
+  )
+}
 
-        <div className="input-field col s12">
+export default Connect;
+
+{/* <div className="input-field col s12">
           <input
           id="username"
           className="validate col s12"
@@ -70,20 +84,4 @@ const Connect = (props) => {
           />
           <label for="database">Database</label>
         </div>
-        <br/>
-
-         <div className="input-field col s12">
-          <input
-          id="uri"
-          className="validate col s12"
-          type='text'
-          value={uri}
-          onChange={handleUriChange}
-          />
-          <label className="active" for="uri">OR enter database URI here</label>
-        </div>
-    </div>
-  )
-}
-
-export default Connect;
+        <br/> */}

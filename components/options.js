@@ -47,7 +47,7 @@ const Options = (props) => {
               <label for="text">Phone Number</label>
             </div>
           </div>
-          <button className="btn waves-effect waves-light green darken-1 optionAlign" onClick={() => startEtl()}>Start</button>
+          <button className="btn waves-effect waves-light green darken-1 optionAlign" onClick={() => startEtl()}>Start</button> 
       </div>
     );
 };

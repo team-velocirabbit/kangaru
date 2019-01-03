@@ -3,6 +3,7 @@ import { Tabs, TabList, Tab, PanelList, Panel, ExtraButton } from 'react-tabtab'
 import Popup from 'reactjs-popup';
 import * as customStyle from 'react-tabtab/lib/themes/material-design';
 import Jobs from '../containers/jobs';
+import DefaultTab from '../components/DefaultTab';
 import $ from 'jquery';
 
 class Closable extends Component {
@@ -11,10 +12,11 @@ class Closable extends Component {
     // eslint-disable-next-line no-use-before-define
     // const tabs = makeData(3);
     this.state = {
-      tabs: [],
+      tabs: [{title: 'Welcome'}],
       activeIndex: 0,
       // array of state for each job
       jobs: [],
+      initialRender: true,
       jobName: '',
     };
     this.handleExtraButton = this.handleExtraButton.bind(this);
@@ -25,25 +27,21 @@ class Closable extends Component {
   
   handleExtraButton() {
     const { tabs, jobs, activeIndex, jobName } = this.state;
-    console.log('job name is ', this.state.jobName)
-    const newTabs = [...tabs, { title: jobName /* content: <div><Jobs propState={ }/></div> */}];
+    let newTabs;
+    if (jobs.length === 0 && tabs.length !== 0) newTabs = [{ title: jobName}];
+    else newTabs = [...tabs, { title: jobName}];
+
     const jobsCopy = jobs.slice();
     jobsCopy.push({});
     if (jobs.length !== 0) jobsCopy[activeIndex] = this['job' + activeIndex.toString()].state;
 
-    console.log('BEFORE ADDING TAB ', this.state.jobs)
-    this.setState({ tabs: newTabs, activeIndex: newTabs.length - 1, jobs: jobsCopy});
+    this.setState({ tabs: newTabs, activeIndex: newTabs.length - 1, jobs: jobsCopy, initialRender: false });
   }
 
   handleTabChange(index) {
     const { activeIndex, jobs } = this.state;
     const jobsCopy = jobs.slice();
     jobsCopy[activeIndex] = this['job' + activeIndex.toString()].state;
-
-
-  console.log('current state is ', this.state.jobs)
-
-
     this.setState({ activeIndex: index, jobs: jobsCopy });
   }
 
@@ -70,16 +68,22 @@ class Closable extends Component {
 
 
   render() {
-    const { tabs, activeIndex } = this.state;
+    const { tabs, activeIndex, initialRender} = this.state;
     const tabTemplate = [];
     const panelTemplate = [];
-    tabs.forEach((tab, i) => {
-      const closable = tabs.length > 1;
-      tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
-      panelTemplate.push(<Panel key={i}> <Jobs ref={(job) => this['job' + i.toString()] = job} state={this.state.jobs[i]} /> </Panel>);
-    });
-
-    console.log('JOBS IS ', this.state.jobs)
+    if (initialRender) {
+      tabs.forEach((tab, i) => {
+        const closable = tabs.length > 1;
+        tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
+        panelTemplate.push(<Panel key={i}> <DefaultTab/> </Panel>);
+      });
+    } else {
+      tabs.forEach((tab, i) => {
+        const closable = tabs.length > 1;
+        tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
+        panelTemplate.push(<Panel key={i}> <Jobs ref={(job) => this['job' + i.toString()] = job} state={this.state.jobs[i]} name={tab.title} /> </Panel>);
+      });
+    }
 
     return (
       <div className="tab">
@@ -130,6 +134,3 @@ class Closable extends Component {
 //   return data;
 // };
 export default Closable;
-
-
-

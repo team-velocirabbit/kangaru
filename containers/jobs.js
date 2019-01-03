@@ -5,8 +5,12 @@ import Load from './load';
 import Options from '../components/options';
 import '../main.css';
 
+
+import { ipcRenderer } from 'electron';
+
+
 const sgMail = require('@sendgrid/mail');
-const etl = require('etl-test');
+const etl = require('rx-etl');
 const remote = require('electron').remote;
 const { dialog } = remote;
 
@@ -60,6 +64,13 @@ class Jobs extends Component {
     this.startEtl = this.startEtl.bind(this);
     this.handleExtractDropdownChange = this.handleExtractDropdownChange.bind(this);
     this.handleLoadDropdownChange = this.handleLoadDropdownChange.bind(this);
+  }
+
+  componentDidMount() {
+    ipcRenderer.on('notify', (event, args) => {
+      console.log('gonna notify')
+      this.handleNotifications();
+    });
   }
 
   handleEmailChange(e) {
@@ -202,40 +213,26 @@ class Jobs extends Component {
     }
 
     startEtl() {
+      const startObject = {
+        name: this.props.name,
+        start: 'n/a',
+        end: 'n/a',
+        status: 'in progress...'
+      }
+
       const { extractUri, loadUri, filePath, fileName, script } = this.state;
-      const newScript = script.substring(script.indexOf('{') + 1, script.lastIndexOf('}'));
-      const scriptFunc = new Function('data', newScript);
-           
-      if (extractUri.length > 0) {
-        if (loadUri.length > 0) {
-          new etl()
-          .simple(extractUri, scriptFunc, loadUri, 'my_database')
-          .combine()
-          .start()
-        }
-        else {
-          new etl()
-          .simple(extractUri, scriptFunc, fileName, 'my_database')
-          .combine()
-          .start()
-        }
+      
+      const etlObject = {
+        name: this.props.name,
+        extractUri,
+        loadUri,
+        filePath,
+        fileName,
+        script
       }
-      if (filePath.length > 0) {
-        if (loadUri.length > 0) {
-          new etl()
-          .simple(filePath, scriptFunc, loadUri, 'my_database')
-          .combine()
-          .start()
-        }
-        else {
-          new etl()
-          .simple(filePath, scriptFunc, fileName, 'my_database')
-          .combine()
-          .start()
-        }
-      }
-      // send notifications
-      this.handleNotifications();
+      
+      ipcRenderer.send('start', startObject);
+      ipcRenderer.send('etl', etlObject);  
     }
 
     handleExtractDropdownChange(e) {

@@ -9,14 +9,15 @@
   "author": "Josie Glore, Mario Granberri, Jae Lee, Tim Kachler",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^4.0.0",
-    "html-loader": "^0.5.5"
+    "html-loader": "^0.5.5",
+    "mongodb": "^3.1.10"
   },
   "description": "",
   "dependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "@material-ui/core": "^3.8.1",
     "@sendgrid/mail": "^6.3.1",
     "babel-loader": "^8.0.4",
     "babel-preset-es2015": "^6.24.1",
@@ -24,10 +25,10 @@
     "dotenv": "^6.2.0",
     "electron": "^3.0.7",
     "electron-devtools-installer": "^2.2.4",
-    "etl-test": "^1.0.0",
     "file-loader": "^2.0.0",
     "fs": "0.0.1-security",
     "html-webpack-plugin": "^3.2.0",
+    "moment": "^2.23.0",
     "jquery": "^3.3.1",
     "monaco-editor": "^0.15.6",
     "monaco-editor-webpack-plugin": "^1.7.0",
@@ -39,6 +40,7 @@
     "react-dropdown": "^1.6.3",
     "react-monaco-editor": "^0.22.0",
     "react-tabtab": "^2.0.0",
+    "rx-etl": "^1.0.0",
     "reactjs-popup": "^1.3.2",
     "style-loader": "^0.23.1",
     "styled-components": "^4.1.3",
