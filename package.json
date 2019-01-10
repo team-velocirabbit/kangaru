@@ -4,7 +4,7 @@
   "main": "main_process.js",
   "scripts": {
     "electron": "electron .",
-    "start": "webpack-dev-server --mode development --hot --inline"
+    "start": "webpack-dev-server --mode development --hot --inline & npm run electron"
   },
   "author": "Josie Glore, Mario Granberri, Jae Lee, Tim Kachler",
   "license": "ISC",
