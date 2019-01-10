@@ -5,18 +5,16 @@ import MonacoEditor from 'react-monaco-editor';
 
 const Transform = (props) => {
   const {  
-      code, 
       script, 
       onCodeChange, 
       handleTransformClick, 
       handleInputChange } = props;
   return (
-    <div className="section">
+    <div className="transformSection">
         <h1>Transform</h1>
         <label htmlFor="npmDependencies">NPM Dependencies</label>
         <br/>
         <Editor 
-          code = {code}
           script = {script}
           onCodeChange = {onCodeChange}
           handleTransformClick = {handleTransformClick}

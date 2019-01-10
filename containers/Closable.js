@@ -12,19 +12,20 @@ class Closable extends Component {
     // eslint-disable-next-line no-use-before-define
     // const tabs = makeData(3);
     this.state = {
-      tabs: [{title: 'Welcome'}],
+      tabs: [{title: 'Welcome!'}],
       activeIndex: 0,
       // array of state for each job
       jobs: [],
       initialRender: true,
       jobName: '',
+      modalIsOpen: false,
     };
     this.handleExtraButton = this.handleExtraButton.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleJobChange = this.handleJobChange.bind(this);
   }
-  
+
   handleExtraButton() {
     const { tabs, jobs, activeIndex, jobName } = this.state;
     let newTabs;
@@ -47,8 +48,9 @@ class Closable extends Component {
 
   handleEdit({ type, index }) {
     this.setState((state) => {
-      let { tabs, activeIndex } = state;
+      let { tabs, activeIndex, jobs } = state;
       if (type === 'delete') {
+        jobs = [...jobs.slice(0, index), ...jobs.slice(index + 1)];
         tabs = [...tabs.slice(0, index), ...tabs.slice(index + 1)];
       }
       if (index - 1 >= 0) {
@@ -56,7 +58,7 @@ class Closable extends Component {
       } else {
         activeIndex = 0;
       }
-      return { tabs, activeIndex };
+      return { tabs, jobs, activeIndex };
     });
   }
 
@@ -65,7 +67,6 @@ class Closable extends Component {
       jobName: e.target.value,
     })
   }
-
 
   render() {
     const { tabs, activeIndex, initialRender} = this.state;
@@ -81,7 +82,7 @@ class Closable extends Component {
       tabs.forEach((tab, i) => {
         const closable = tabs.length > 1;
         tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
-        panelTemplate.push(<Panel key={i}> <Jobs ref={(job) => this['job' + i.toString()] = job} state={this.state.jobs[i]} name={tab.title} /> </Panel>);
+        panelTemplate.push(<Panel key={i}><Jobs ref={(job) => this['job' + i.toString()] = job} state={this.state.jobs[i]} name={tab.title} /></Panel>);
       });
     }
 
@@ -92,45 +93,56 @@ class Closable extends Component {
           onTabChange={this.handleTabChange}
           activeIndex={activeIndex}
           customStyle={customStyle}
-          ExtraButton={ 
-            <Popup trigger={<button>+ New Job</button>} position='right center'>
-            <div>
-              <input id='addTab' type='text' onChange={this.handleJobChange}/>
-              <label for='addTab'>Name for this job</label>
-              <ExtraButton onClick={this.handleExtraButton}>Add Job</ExtraButton>
-            </div>
+          ExtraButton={
+            <Popup trigger={<button id='newJob'>+ New Job</button>} modal contentStyle={{
+              border: 'solid', borderColor: 'lightgrey', borderRadius: '0.5rem', borderWidth: '0.1rem', width: '25%',
+            }}>
+             {close => (
+               <div className='popup'>
+                <a className='close' onClick={close} style={{ fontSize: '2.3rem', cursor: 'pointer' }}> &nbsp;&times; </a>
+                <div className="input-field col s6 inputField">
+                  <input 
+                    id='addTab' 
+                    type='text' 
+                    onChange={this.handleJobChange} 
+                    onKeyPress={(event) => {
+                      const code = event.keyCode || event.which;
+                      if (code === 13) {
+                        if (document.getElementById('addTab').value === '') {
+                        return window.alert('Please specify name of new job!');
+                      }
+                      this.handleExtraButton(); 
+                      close() 
+                      }
+                    }
+                  }/>
+                  <label for='addTab'>Name for new job</label>
+                </div>
+                <div id='butCont'>
+                  <button 
+                    id='addBut' 
+                    onClick={() => { 
+                      if (document.getElementById('addTab').value === '') {
+                        return window.alert('Please specify name of new job!');
+                      }
+                      this.handleExtraButton(); 
+                      close() 
+                    }}>Add Job</button>
+                </div>
+              </div>
+             )}
             </Popup>
-          }
-        >
+          }>
           <TabList>
             {tabTemplate}
           </TabList>
           <PanelList>
             {panelTemplate}
           </PanelList>
-          {/* <Popup trigger={<button>+</button>} position="right center">
-            <div>
-              <input id='addTab' type='text' onChange={this.handleJobChange}/>
-              <label for='addTab'>Name for this job</label>
-              <ExtraButton onClick={this.handleExtraButton}>Add Job</ExtraButton>
-            </div>
-          </Popup> */}
         </Tabs>
       </div>
     );
   }
 }
-// const makeData = (number, titlePrefix = 'Tab') => {
-//   const data = [];
-//   for (let i = 0; i < number; i++) {
-//     data.push({
-//       title: `${titlePrefix} ${i}`,
-//       content:
-//         <div>
-//           <Jobs ref={(job0) => { this.job0 = job0 }} />
-//         </div>
-//     });
-//   }
-//   return data;
-// };
+
 export default Closable;

@@ -41,25 +41,30 @@ class Extract extends Component {
 
   render() {
     // const { extractImport, extractConnect, dropdownValue } = this.state;
-    const { username, password, port, host, database, extractUri, filePath, handleInputChange, handleExtractUriChange, browseFiles, extractConnect, extractImport, extractDropdownValue, handleExtractDropdownChange } = this.props;
+    const { username, password, port, host, 
+      database, extractUri, extractCollection, filePath, handleInputChange, 
+      handleExtractUriChange, browseFiles, extractConnect, extractImport, 
+      extractDropdownValue, handleExtractCollectionChange, handleExtractDropdownChange } = this.props;
     const importComp = extractImport ? 
       <ExtractImport
-          browseFiles = {browseFiles}
-          filePath = {filePath}
-          extractDropdownValue = {extractDropdownValue}
+          browseFiles={browseFiles}
+          filePath={filePath}
+          extractDropdownValue={extractDropdownValue}
       />
       : null
     const connectComp = extractConnect ? 
       <Connect 
-        username = {username}
-        password = {password}
-        port = {port}
-        host = {host}
-        database = {database}
-        uri = {extractUri}
-        handleInputChange = {handleInputChange}
-        handleUriChange = {handleExtractUriChange}
-        extractDropdownValue = {extractDropdownValue}
+        username={username}
+        password={password}
+        port={port}
+        host={host}
+        database={database}
+        uri={extractUri}
+        collection={extractCollection}
+        handleInputChange={handleInputChange}
+        handleCollectionChange={handleExtractCollectionChange}
+        handleUriChange={handleExtractUriChange}
+        extractDropdownValue={extractDropdownValue}
       />
       : null
     return (      

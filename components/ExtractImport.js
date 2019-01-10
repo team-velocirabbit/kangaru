@@ -7,7 +7,15 @@ const ExtractImport = (props) => {
       <br/>
       {/* <h2>Import</h2> */}
       <div>
-        File Path: <input type="text" value={filePath}/>
+        <div className="input-field col s12">
+          <input
+          id="filePath"
+          className="validate col s12"
+          type='text'
+          value={filePath}
+          />
+          <label className="active" for="filePath">File Path</label>
+        </div>
         <button className="btn waves-effect waves-light grey darken-4" onClick={() => browseFiles()}>Browse</button>
       </div>    
     </div>

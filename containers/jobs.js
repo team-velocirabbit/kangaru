@@ -24,7 +24,10 @@ class Jobs extends Component {
   constructor(props) {
     super(props);
     const { state } = this.props;
-    this.state = {      
+    this.state = {
+      started: this.props.state.started ? this.props.state.started : false,
+      loadCollection: this.props.state.loadCollection ? this.props.state.loadCollection : '',
+      extractCollection: this.props.state.extractCollection ? this.props.state.extractCollection : '',    
       emailCheck: this.props.state.emailCheck ? this.props.state.emailCheck : false,
       email: this.props.state.email ? this.props.state.email : '',
       textCheck: this.props.state.textCheck ? this.props.state.textCheck : false,
@@ -41,8 +44,7 @@ class Jobs extends Component {
       fileName: this.props.state.fileName ? this.props.state.fileName : '',
       format: this.props.state.format ? this.props.state.format : '',
       dependencies: this.props.state.dependencies ? this.props.state.dependencies : '',
-      code: this.props.state.code ? this.props.state.code : 'const transform = (data) => { \n//write your code here \n}',
-      script: this.props.state.script ? this.props.state.script : '',
+      script: this.props.state.script ? this.props.state.script : 'const transform = (data) => { \n//write your code here \n}',
       extractImport: this.props.state.extractImport ? this.props.state.extractImport : false,
       extractConnect: this.props.state.extractConnect ? this.props.state.extractConnect : false,
       extractDropdownValue: this.props.state.extractDropdownValue ? this.props.state.extractDropdownValue : '',
@@ -53,12 +55,13 @@ class Jobs extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelection = this.handleSelection.bind(this);
-    this.handleNotifications = this.handleNotifications.bind(this);
     this.handleExtractUriChange = this.handleExtractUriChange.bind(this);
     this.handleLoadUriChange = this.handleLoadUriChange.bind(this);
+    this.handleExtractCollectionChange = this.handleExtractCollectionChange.bind(this);
+    this.handleLoadCollectionChange = this.handleLoadCollectionChange.bind(this);
+    this.handleStart = this.handleStart.bind(this);
     this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
-    this.handleTransformClick = this.handleTransformClick.bind(this);
     this.browseFiles = this.browseFiles.bind(this);
     this.browseDirectories = this.browseDirectories.bind(this);
     this.startEtl = this.startEtl.bind(this);
@@ -66,11 +69,10 @@ class Jobs extends Component {
     this.handleLoadDropdownChange = this.handleLoadDropdownChange.bind(this);
   }
 
-  componentDidMount() {
-    ipcRenderer.on('notify', (event, args) => {
-      console.log('gonna notify')
-      this.handleNotifications();
-    });
+  handleStart() {
+    this.setState({
+      started: true,
+    })
   }
 
   handleEmailChange(e) {
@@ -114,163 +116,170 @@ class Jobs extends Component {
     }
   }
 
-  handleNotifications(e) {
-    console.log('youre now about to send an email');
+  handleInputChange(e) {
+    let obj;
+    if (e.target.id === 'email') obj = { email: e.target.value };
+    if (e.target.id === 'text') obj = { phoneNumber: e.target.value };
+    if (e.target.id === 'username') obj = { username: e.target.value };
+    if (e.target.id === 'password') obj = { password: e.target.value };
+    if (e.target.id === 'port') obj = { port: e.target.value };
+    if (e.target.id === 'host') obj = { host: e.target.value };
+    if (e.target.id === 'database') obj = { database: e.target.value };
+    if (e.target.id === 'fileName') obj = { fileName: e.target.value };
+    if (e.target.id === 'npmDependencies') obj = { dependencies: e.target.value };
+    this.setState(obj);
+  }
 
-    if (this.state.emailCheck) {
-      console.log('sending email')
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);     
-      const msg = {
-        to: 'josieglore@gmail.com',
-        from: 'kachler@mac.com',
-        subject: 'Your Kangaru job has finished',
-        text: 'Your Kangaru job has finished',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-      };
-      sgMail.send(msg);
-    }
-    if (this.state.textCheck) {
-      console.log('sending text')
-      console.log('phone number is ', process.env.CELL_PHONE_NUMBER)
-      console.log('text coming from ', process.env.TWILIO_PHONE_NUMBER)
-      client.messages.create({
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: process.env.CELL_PHONE_NUMBER,
-        // to: this.state.phoneNumber,
-        body: 'Your Kangaru job has finished.',
-      });
-     };
-    }
+  handleExtractUriChange(e) {
+    this.setState({
+      extractUri: e.target.value,
+    })
+  }
 
-    handleInputChange(e) {
-      let obj;
-      if (e.target.id === 'email') obj = { email: e.target.value };
-      if (e.target.id === 'text') obj = { phoneNumber: e.target.value };
-      if (e.target.id === 'username') obj = { username: e.target.value };
-      if (e.target.id === 'password') obj = { password: e.target.value };
-      if (e.target.id === 'port') obj = { port: e.target.value };
-      if (e.target.id === 'host') obj = { host: e.target.value };
-      if (e.target.id === 'database') obj = { database: e.target.value };
-      if (e.target.id === 'filename') obj = { fileName: e.target.value };
-      if (e.target.id === 'npmDependencies') obj = { dependencies: e.target.value };
-      console.log('database is ', e.target.value);
+  handleLoadUriChange(e) {
+    this.setState({
+      loadUri: e.target.value,
+    })
+  }
 
-      this.setState(obj);
-    }
+  handleExtractCollectionChange(e) {
+    this.setState({
+      extractCollection: e.target.value,
+    })
+  }
 
-    handleExtractUriChange(e) {
+  handleLoadCollectionChange(e) {
+    this.setState({
+      loadCollection: e.target.value,
+    })
+  }
+
+  handleFileTypeChange(e) {
+    console.log('filetype is ', e.target.id)
+    this.setState({
+      format: e.value,
+      formatDropdownValue: e.value,
+    });
+  }
+
+  onCodeChange(newValue) {
+    this.setState({
+      script: newValue
+    });
+  }
+
+  browseFiles() {
+    dialog.showOpenDialog({ 
+      properties: ['openFile'] 
+    },
+    (file) => {
       this.setState({
-        extractUri: e.target.value,
-      })
-    }
+        filePath: file[0],
+      });
+    });
+  }
 
-    handleLoadUriChange(e) {
+  browseDirectories() {
+    dialog.showOpenDialog({ 
+      properties: ['openDirectory'] 
+    },
+    (file) => {
       this.setState({
-        loadUri: e.target.value,
-      })
+        location: file[0],
+      });
+    });
+  }
+
+  startEtl() {
+    const startObject = {
+      name: this.props.name,
+      start: 'n/a',
+      end: 'n/a',
+      status: 'in progress...'
     }
 
-    handleFileTypeChange(e) {
-      console.log('filetype is ', e.target.id)
+    const { extractUri, loadUri, extractCollection, loadCollection, 
+      location, filePath, fileName, script, emailCheck, textCheck, email, phoneNumber } = this.state;
+    
+    if (extractUri === '' && extractCollection === '' && loadUri === ''
+      && filePath === '' && fileName === '' && script === '' && location === '') {
+      return window.alert('Cannot start job. Please make sure all necessary fields have been provided.');
+    }
+
+    if (script === '') {
+      return window.alert('Cannot start job. Please make sure transform script has been written.'  
+        + 'For simple migration with no manipulation, just return data from function.');
+    }
+
+    if ((extractUri === '' || extractCollection === '') && (filePath === '')) {
+      return window.alert('Cannot start job. Please make sure extract is provided with necessary information.');
+    }
+
+    if ((loadUri === '') && (location === '' || fileName === '')) {
+      return window.alert('Cannot start job. Please make sure load is provided with necessary information.');
+    }
+    const etlObject = {
+      name: this.props.name,
+      extractUri,
+      extractCollection,
+      loadUri,
+      loadCollection,
+      location,
+      filePath,
+      fileName,
+      script,
+      textCheck,
+      emailCheck,
+      email,
+      phoneNumber
+    }
+
+    // check phone number and email given if selected on checkbox
+    if ((textCheck && !phoneNumber) || (phoneNumber && !textCheck)) {
+      return window.alert('Please provide phone number or check the phone number box.');
+    }
+    if ((emailCheck && !email) || (!emailCheck && email)) {
+      return window.alert('Please provide email or check the email box.');
+    }
+    ipcRenderer.send('start', startObject);
+    ipcRenderer.send('etl', etlObject);  
+  }
+
+  handleExtractDropdownChange(e) {
+    if (e.value === 'Import') {
       this.setState({
-        format: e.value,
-        formatDropdownValue: e.value,
+        extractConnect: false,
+        extractImport: true,
+        extractDropdownValue: 'Import',
+      });
+    } else if (e.value === 'Connect') {
+      this.setState({
+        extractImport: false,
+        extractConnect: true,
+        extractDropdownValue: 'Connect',
       });
     }
+  }
 
-    onCodeChange(newValue) {
-      console.log('onCodeChange', newValue);
-      this.setState({code: newValue
+  handleLoadDropdownChange(e) {
+    if (e.value === 'Export') {
+      this.setState({
+        loadConnect: false,
+        loadExport: true,
+        loadDropdownValue: 'Export',
+      });
+    } else if (e.value === 'Connect') {
+      this.setState({
+        loadExport: false,
+        loadConnect: true,
+        loadDropdownValue: 'Connect',
       });
     }
-
-    handleTransformClick() {
-      const newCode = this.state.code
-      console.log('new code is ', newCode);
-      this.setState({ script: newCode });
-    }
-
-    browseFiles() {
-      dialog.showOpenDialog({ 
-        properties: ['openFile'] 
-      },
-      (file) => {
-        this.setState({
-          filePath: file[0],
-        });
-      });
-    }
-
-    browseDirectories() {
-      dialog.showOpenDialog({ 
-        properties: ['openDirectory'] 
-      },
-      (file) => {
-        this.setState({
-          location: file[0],
-        });
-      });
-    }
-
-    startEtl() {
-      const startObject = {
-        name: this.props.name,
-        start: 'n/a',
-        end: 'n/a',
-        status: 'in progress...'
-      }
-
-      const { extractUri, loadUri, filePath, fileName, script } = this.state;
-      
-      const etlObject = {
-        name: this.props.name,
-        extractUri,
-        loadUri,
-        filePath,
-        fileName,
-        script
-      }
-      
-      ipcRenderer.send('start', startObject);
-      ipcRenderer.send('etl', etlObject);  
-    }
-
-    handleExtractDropdownChange(e) {
-      if (e.value === 'Import') {
-        this.setState({
-          extractConnect: false,
-          extractImport: true,
-          extractDropdownValue: 'Import',
-        });
-      } else if (e.value === 'Connect') {
-        this.setState({
-          extractImport: false,
-          extractConnect: true,
-          extractDropdownValue: 'Connect',
-        });
-      }
-      console.log('extractImport is ', this.state.extractImport)
-      console.log('extractConnect is ', this.state.extractConnect)
-    }
-
-    handleLoadDropdownChange(e) {
-      if (e.value === 'Export') {
-        this.setState({
-          loadConnect: false,
-          loadExport: true,
-          dropdownValue: 'Export',
-        });
-      } else if (e.value === 'Connect') {
-        this.setState({
-          loadExport: false,
-          loadConnect: true,
-          dropdownValue: 'Connect',
-        });
-      }
-    }
+  }
 
   render() {
     const { 
+      started,
       emailCheck, 
       textCheck, 
       email, 
@@ -282,12 +291,13 @@ class Jobs extends Component {
       database,
       extractUri,
       loadUri,
+      extractCollection,
+      loadCollection,
       filePath,
       location,
       fileName,
       format,
       dependencies,
-      code,
       script,
       extractConnect,
       extractImport,
@@ -295,67 +305,71 @@ class Jobs extends Component {
       loadConnect,
       loadExport,
       loadDropdownValue } = this.state;
+
     return (
       <div>
         <div className='jobs-container'>
           <Extract 
-            username = {username}
-            password = {password}
-            port = {port}
-            host = {host}
-            database = {database}
-            extractUri = {extractUri}
-            filePath = {filePath}
-            extractConnect = {extractConnect}
-            extractImport = {extractImport} 
-            extractDropdownValue = {extractDropdownValue}
+            username={username}
+            password={password}
+            port={port}
+            host={host}
+            database={database}
+            extractUri={extractUri}
+            extractCollection={extractCollection}
+            filePath={filePath}
+            extractConnect={extractConnect}
+            extractImport={extractImport} 
+            extractDropdownValue={extractDropdownValue}
             handleInputChange={this.handleInputChange}
-            handleExtractUriChange = {this.handleExtractUriChange}
-            browseFiles = {this.browseFiles}
-            handleExtractDropdownChange = {this.handleExtractDropdownChange}
+            handleExtractUriChange={this.handleExtractUriChange}
+            handleExtractCollectionChange={this.handleExtractCollectionChange}
+            browseFiles={this.browseFiles}
+            handleExtractDropdownChange={this.handleExtractDropdownChange}
           />
           <Transform 
             dependencies = {dependencies}
-            code = {code}
             script = {script}
             onCodeChange = {this.onCodeChange}
-            handleTransformClick = {this.handleTransformClick}
             handleInputChange = {this.handleInputChange}
           />
           <Load 
-             username = {username}
-             password = {password}
-             port = {port}
-             host = {host}
-             database = {database}
-             loadUri = {loadUri}
-             location = {location}
-             fileName = {fileName}
-             format = {format}
-             loadConnect = {loadConnect}
-             loadExport = {loadExport}
-             loadDropdownValue = {loadDropdownValue}
-             handleInputChange = {this.handleInputChange}
-             handleLoadUriChange = {this.handleLoadUriChange}
-             handleFileTypeChange = {this.handleFileTypeChange}
-             browseDirectories = {this.browseDirectories}
-             handleLoadDropdownChange = {this.handleLoadDropdownChange}
+             username={username}
+             password={password}
+             port={port}
+             host={host}
+             database={database}
+             loadUri={loadUri}
+             loadCollection={loadCollection}
+             location={location}
+             fileName={fileName}
+             format={format}
+             loadConnect={loadConnect}
+             loadExport={loadExport}
+             loadDropdownValue={loadDropdownValue}
+             handleInputChange={this.handleInputChange}
+             handleLoadUriChange={this.handleLoadUriChange}
+             handleLoadCollectionChange={this.handleLoadCollectionChange}
+             handleFileTypeChange={this.handleFileTypeChange}
+             browseDirectories={this.browseDirectories}
+             handleLoadDropdownChange={this.handleLoadDropdownChange}
           />
         </div>
         <div>
           <Options 
-            emailCheck = {emailCheck}
-            textCheck = {textCheck}
-            email = {email}
-            phoneNumber = {phoneNumber}
-            extractUri = {extractUri}
-            loadUri = {loadUri}
-            filePath = {filePath}
-            fileName = {fileName}
-            startEtl = {this.startEtl}
-            handleSelection = {this.handleSelection}
-            handleInputChange = {this.handleInputChange}
-            handleNotifications = {this.handleNotifications}
+            started={started}
+            emailCheck={emailCheck}
+            textCheck={textCheck}
+            email={email}
+            phoneNumber={phoneNumber}
+            extractUri={extractUri}
+            loadUri={loadUri}
+            filePath={filePath}
+            fileName={fileName}
+            startEtl={this.startEtl}
+            handleStart={this.handleStart}
+            handleSelection={this.handleSelection}
+            handleInputChange={this.handleInputChange}
           />
         </div>
       </div>

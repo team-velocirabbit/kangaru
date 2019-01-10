@@ -2,12 +2,7 @@ import React from 'react';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
-const ExtractImport = (props) => {
-  const DROPDOWN_OPTIONS = [
-    { value: 'csv', label: 'CSV' },
-    { value: 'json', label: 'JSON' },
-    { value: 'xml', label: 'XML' }
-  ];
+const LoadExport = (props) => {
   const { 
     browseDirectories, 
     fileName, 
@@ -21,33 +16,28 @@ const ExtractImport = (props) => {
   return (
     <div>
       <br/>
-      <div>
-        File Format: 
-        <Dropdown
-          options={DROPDOWN_OPTIONS} 
-          value={format}
-          onChange={handleFileTypeChange} 
-          placeholder="Select file format"
-        />
-      </div>
-      <div>Filename: 
-        <input 
-          id='filename'
-          type='text'
-          onChange = {handleInputChange} 
-          placeholder = 'What will your file be called?' 
-          value={fileName}
-        />
-      </div>
-      <div>Location: 
+      <div className="input-field col s12">
         <input
-          type='text'
-          value={location}
+        id="fileName"
+        className="validate col s12"
+        type='text'
+        value={fileName}
+        onChange={handleInputChange}
         />
-        <button className="btn waves-effect waves-light grey darken-4" onClick={() => browseDirectories()}>Browse</button>
+        <label className="active" for="fileName">New file name</label>
       </div>
+      <div className="input-field col s12">
+        <input
+        id="location"
+        className="validate col s12"
+        type='text'
+        value={location}
+        />
+        <label className="active" for="location">Location of file (file path)</label>
+      </div>
+      <button className="btn waves-effect waves-light grey darken-4" onClick={() => browseDirectories()}>Browse</button>
     </div>   
   )
 }
 
-export default ExtractImport;
+export default LoadExport;
