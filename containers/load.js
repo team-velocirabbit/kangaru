@@ -18,8 +18,6 @@ class Load extends Component {
     };
     // this.handleDropdownChange = this.handleDropdownChange.bind(this);
   }
-
-  
     
   render() {
     // const { loadExport, loadConnect, dropdownValue } = this.state;
@@ -30,6 +28,7 @@ class Load extends Component {
       host, 
       database, 
       loadUri, 
+      loadCollection,
       location, 
       fileName, 
       format, 
@@ -37,33 +36,36 @@ class Load extends Component {
       loadConnect,
       loadDropdownValue,
       handleInputChange,
-      handleLoadUriChange, 
+      handleLoadUriChange,
+      handleLoadCollectionChange, 
       handleFileTypeChange, 
       browseDirectories, 
       handleLoadDropdownChange,
    } = this.props;
     const exportComp = loadExport ? 
       <LoadExport
-        fileName = {fileName}
-        location = {location}
-        format = {format}
-        loadDropdownValue = {loadDropdownValue}
-        handleInputChange = {handleInputChange}
-        handleFileTypeChange = {handleFileTypeChange}
-        browseDirectories = {browseDirectories}      
+        fileName={fileName}
+        location={location}
+        format={format}
+        loadDropdownValue={loadDropdownValue}
+        handleInputChange={handleInputChange}
+        handleFileTypeChange={handleFileTypeChange}
+        browseDirectories={browseDirectories}      
       />
       : null
     const connectComp = loadConnect ?
       <Connect 
-        username = {username}
-        password = {password}
-        port = {port}
-        host = {host}
-        database = {database}
-        uri = {loadUri}
-        loadDropdownValue = {loadDropdownValue}
-        handleInputChange = {handleInputChange}
-        handleUriChange = {handleLoadUriChange}
+        username={username}
+        password={password}
+        port={port}
+        host={host}
+        database={database}
+        uri={loadUri}
+        collection={loadCollection}
+        loadDropdownValue={loadDropdownValue}
+        handleInputChange={handleInputChange}
+        handleUriChange={handleLoadUriChange}
+        handleCollectionChange={handleLoadCollectionChange}
       />
       : null
     return (

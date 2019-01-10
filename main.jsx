@@ -10,7 +10,7 @@ class App extends Component {
   render(){
         return (
             <div className="mainContainer">
-                <span id="brand">
+                 <span id="brand">
                    <img id="kangarooLogo" src="https://bit.ly/2BJJehs" alt="kangaru logo"/>
                    <p id='logo'>Kangaru</p>
                 </span>

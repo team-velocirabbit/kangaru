@@ -1,9 +1,13 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
-const etl = require('rx-etl');
+const { Etl } = require('../etl_test/index');
+const sgEmail = require('@sendgrid/mail');
+const client = require('twilio')(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN,
+);
 const MongoClient = require('mongodb').MongoClient;
-
 
 const {
  app,
@@ -22,8 +26,9 @@ app.on('ready', function () {
    'width': 1500,
    'height': 900,
    'minHeight': 800,
-   'minWidth': 1100
-   // titleBarStyle: 'customButtonsOnHover', frame: false
+   'minWidth': 1100,
+   'maxHeight': 900,
+   'maxWidth': 1500,
  });
  //Load HTML into window
  mainWindow.loadURL(url.format({
@@ -41,8 +46,6 @@ app.on('ready', function () {
  Menu.setApplicationMenu(mainMenu);
 
 });
-
-
 
 const mainMenuTemplate = [{
  label: 'File',
@@ -78,72 +81,123 @@ if(process.platform == 'darwin'){
 }
 
 mainMenuTemplate.push({
-    label: 'Developer Tools',
-    submenu: [
-      {
-        label: 'Toggle DevTools',
-        accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
-        click(item, focusedWindow){
-          focusedWindow.toggleDevTools();
+  label: 'Developer Tools',
+  submenu: [
+    {
+      label: 'Toggle DevTools',
+      accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
+      click(item, focusedWindow){
+        focusedWindow.toggleDevTools();
+      }
+    },
+    {
+      role: 'reload'
+    }
+  ]
+});
+
+// starts the etl process, listens to ipcRenderer located in jobs.js in startEtl()
+ipcMain.on('etl', (event, arg) => {
+  const {
+    name,
+    extractUri,
+    extractCollection,
+    loadUri,
+    loadCollection,
+    location,
+    filePath,
+    fileName,
+    script,
+    emailCheck,
+    textCheck,
+    email,
+    phoneNumber,
+  } = arg;
+  
+  const newScript = script.substring(script.indexOf('{') + 1, script.lastIndexOf('}'));
+  const scriptFunc = new Function('data', newScript);
+
+  let extractString;
+  let extractName;
+  let callback = [scriptFunc];
+  let loadString;
+  let loadName;
+
+  if (extractUri && filePath) return window.alert('Cannot extract from both flat file and database. Try again.');
+  if (extractUri) {
+    if (!extractCollection) return window.alert('Collection name missing in "Extract".');
+    extractString = extractUri;
+    extractName = extractCollection;
+  }
+  if (filePath) {
+    extractString = filePath;
+    extractName = null;
+  }
+  if (!scriptFunc) {
+    return window.alert('Invalid function given, please re-write function and make sure the format is valid (use given function as reference).');
+  }
+  if (loadUri && (location || fileName)) return window.alert('Cannot load to both flat file and database. Try again.');
+  if (loadUri) {
+    if (!loadCollection) return window.alert('Collection name missing in "Load".');
+    loadString = loadUri;
+    loadName = loadCollection;
+  }
+  if (location) {
+    if (!fileName) return window.alert('File name missing. Please provide the name of the new file in "Load".');
+    loadString = location;
+    loadName = fileName;
+  }
+  
+  let job = new Etl()
+  try {
+    job.simple(extractString, extractName, callback, loadString, loadName)
+    job.combine();
+
+    if (emailCheck) job.addEmailNotification({
+      to: email,
+      from: 'rxjs-etl@gmail.com',
+      subject: 'Your job has been completed',
+      text: 'Your job ' + name + ' has finished.',
+      html: '<strong>Your job ' + name + ' has finished.</strong>',
+    });
+
+    if (textCheck) job.addTextNotification({
+      to: phoneNumber,
+      body: 'Your job ' + name + ' has finished.',
+    });
+
+    job.observable$.subscribe(
+      null,
+      (err) => sendError(name),
+      () => {
+        if (emailCheck) {
+          sgEmail.setApiKey(process.env.SENDGRID_API_KEY);
+          sgEmail.send(job.email);
         }
+        if (textCheck) {
+          client.messages.create({
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: job.text.to,
+            body: job.text.body,
+          });
+        }
+        sendDone(name);
       },
-      {
-        role: 'reload'
-      }
-    ]
-  });
+    );
+  } catch (err) {
+    sendError(name);
+  }
+});
 
-  // starts the etl process, listens to ipcRenderer located in jobs.js in startEtl()
-  ipcMain.on('etl', (event, arg) => {
-    const {
-      name,
-      extractUri,
-      loadUri,
-      filePath,
-      fileName,
-      script
-    } = arg;
-    
-    const newScript = script.substring(script.indexOf('{') + 1, script.lastIndexOf('}'));
-    const scriptFunc = new Function('data', newScript);
-    let job;
+function sendError(name) {
+  mainWindow.webContents.send('error', name);
+}
 
-    if (extractUri.length > 0) {
-      if (loadUri.length > 0) {
-        job = new etl()        
-        job.simple(extractUri, scriptFunc, loadUri, 'test')
-        job.combine()
-      }
-      else {
-        job = new etl()
-        job.simple(extractUri, scriptFunc, fileName, 'test')
-        job.combine()
-      }
-    }
-    if (filePath.length > 0) {
-      if (loadUri.length > 0) {
-        job = new etl()
-        job.simple(filePath, scriptFunc, loadUri, 'test')
-        job.combine()
-      }
-      else {
-        job = new etl()
-        job.simple(filePath, scriptFunc, fileName, 'test')
-        job.combine()
-      }
+function sendDone(name) {
+  mainWindow.webContents.send('done', name);
+}
 
-      job.observable$.subscribe(
-        null, 
-        () => console.error('yoooo'),
-        () => console.log('done!!!!!!')
-      );
-    }
-  });
-
-  // listens to ipcRenderer in queue.js
-  ipcMain.on('notify', (event, arg) => event.sender.send('notify', 'success'));
-
-  // listens to  ipcRenderer in jobs.js in startEtl()
-  ipcMain.on('start', (event, arg) => {
-    event.sender.send('q', arg);
-  });
+// listens to  ipcRenderer in jobs.js in startEtl()
+ipcMain.on('start', (event, arg) => {
+  event.sender.send('q', arg);
+});

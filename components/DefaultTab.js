@@ -7,8 +7,8 @@ class DefaultTab extends Component {
 
 	render() {
 		return(
-			<div id='default' style={{ height: '5rem', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-				<h3 id='defaultText' style={{ marginTop: '5rem', textAlign: 'center', color: 'lightgrey', fontSize: '1.5rem' }}> + Add a new job </h3>
+			<div id='default' style={{ height: '15rem', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+				<h3 id='defaultText' style={{ marginTop: '10rem', textAlign: 'center', color: 'lightgrey', fontSize: '2rem' }}> + Add a new job </h3>
 			</div>
 		);
 	};

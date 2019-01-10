@@ -1,152 +1,211 @@
 @import url('https://fonts.googleapis.com/css?family=Mukta|Raleway');
 body {
-    background-color:#686766;
-    font-family: 'Raleway', sans-serif;
-    /* font-family: 'Mukta', sans-serif; */
-    height: 100%;
-    width: 100%;
-    border-style: solid;
-    border-color: black;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
+  background-color:#484848;
+  font-family: 'Raleway', sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
 }
 
 .section {
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    border: solid lightgrey 0.1rem;
-    border-radius: 0.3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 0.8rem 0.5rem;
-    height: 33rem;
-    min-height: 33rem;
-    width: 100%;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  border: solid lightgrey 0.1rem;
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.8rem 0.5rem;
+  height: 33rem;
+  min-height: 33rem;
+  width: 50%;
+}
+
+.transformSection {
+  border: solid lightgrey 0.1rem;
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.8rem 0.5rem;
+  height: 33rem;
+  min-height: 33rem;
+  width: 80%;
 }
 
 .editor {
-    display: flex;
-    flex-direction: column;
-    justify-items: flex-start;
-    align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+  align-content: center;
 }
 
 h1 {
-    color: #B7B7B6;
-    font-size: 3rem;
-    text-align: center;
-    margin: 0 auto;
-    padding-bottom: 2rem;
+  color: rgba(121, 121, 121, 0.598);
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0 auto;
+  padding-bottom: 2rem;
 }
 
 h2 { 
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 h3 {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 img {
-    height: 50px;
-    width: 50px;
+  height: 50px;
+  width: 50px;
 }
-
-/* .mainContainer{
-   
-} */
 
 #app {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
 }
 
 #logo {
-    font-size: 1.7rem;
-    padding: 0;
-    margin: 0;
-    font-weight: bold;
-
+  font-size: 1.7rem;
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
 }
 
 #brand {
-    display: flex;
-    flex-direction: row;
-    padding: 0.2rem;
-    margin-bottom: 0.5rem;
-    margin-top: 0.2rem;
+  display: flex;
+  color: rgba(255, 255, 255, 0.699);
+  flex-direction: row;
+  padding: 0.2rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.2rem;
+  margin-left: 0.5rem;
 }
 
 #kangarooLogo {
-    width: 3%;
-    height: 3%;;
+  width: 2.5%;
+  height: 2.5%;
 }
 
 .queue {
-    margin-top: 0.2rem;
-    width: 99%;
-    margin-left: 0.5rem;
-    margin-bottom: 1rem;
-    border-style: solid;
-    border-color: lightgrey;
-    border-width: 0.1rem;
-    border-radius: 0.4rem;
-    background-color: white;
+  margin: 0 auto;
+  width: 98%;
+  border-style: solid;
+  border-color: lightgrey;
+  border-width: 0.1rem;
+  border-radius: 0.4rem;
+  background-color: white;
 }
 
 .jobs-container {
-    display: flex;
-    width: 100%;
-    margin: 0;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    /* border: solid white 0.1rem; */
-    border-radius: 0.4rem;
+  display: flex;
+  width: 100%;
+  margin: 0;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 0.4rem;
 }
 
 .options {
-    display: flex;
-    flex-direction: row;
-    margin-top: 0.2rem;
-    margin-left: 0.5rem;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    border: solid lightgrey 0.1rem;
-    border-radius: 0.4rem;
-    padding: 0rem;
-    width: 99%;
-    height: 5rem;
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: solid lightgrey 0.1rem;
+  border-radius: 0.4rem;
+  width: 99%;
+  height: 5rem;
 }
 
 .optionAlign {
-    margin-right: 3rem;
-    margin-top: 1.5rem;
-    text-align: center;
-    justify-content: center;
+  margin-right: 3rem;
+  margin-top: 0.4rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  height: 2%;
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-align: center;
+  justify-content: center;
 }
 
 .options p {
-    padding: 0.2rem;
-    color: white;
+  color: black;
+  font-size: 0.9rem;
+  padding: 0 1rem;
 }
 
-.options input {
-    background-color: pink;
-    z-index: 1;
+.align {
+  margin-top: 0.7rem;
+  padding-left: 5rem;
+}
+
+#text, #email {
+  width: 100%;
 }
 
 .inputField {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    width: 35rem;
-    margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .checkbox {
-    padding-top: 2rem;
+  padding-top: 2rem;
+}
+
+#newJob {
+  border-radius: 1rem;
+  border: solid #28a745 0.1rem;
+  background-color: #28a745;
+  color: white;
+  width: 8%;
+  height: 4.5%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: absolute;
+  bottom: 93.5%;
+  left: 90.8%;
+  z-index: 1;
+}
+
+#addBut {
+  border-radius: 0.3rem;
+  border: solid #28a745 0.1rem;
+  background-color: #28a745;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+#butCont {
+  display: flex;
+  justify-items: 'center';
+  padding: 1rem 0.5rem;
+}
+
+.inputField {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.tab {
+  width: 98%;
+  margin: 0 auto;
+  margin-bottom: 0.2rem;
+  border: solid white 0.1rem;
+  border-radius: 0.2rem;
 }
