@@ -1,7 +1,7 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
-const { Etl } = require('../etl_test/index');
+const { Etl, extract, load } = require('rxjs-etl');
 const sgEmail = require('@sendgrid/mail');
 const client = require('twilio')(
   process.env.TWILIO_ACCOUNT_SID,
