@@ -8,6 +8,8 @@ const Connect = (props) => {
     port,
     database,
     uri,
+    collection,
+    handleCollectionChange,
     handleInputChange,
     handleUriChange,
   } = props;
@@ -22,7 +24,17 @@ const Connect = (props) => {
         value={uri}
         onChange={handleUriChange}
         />
-        <label className="active" for="uri">Enter database URI here</label>
+        <label className="active" for="uri">Enter database URI</label>
+      </div>
+      <div className="input-field col s12">
+        <input
+        id="collection"
+        className="validate col s12"
+        type='text'
+        value={collection}
+        onChange={handleCollectionChange}
+        />
+        <label className="active" for="collection">Enter collection name</label>
       </div>
     </div>
   )

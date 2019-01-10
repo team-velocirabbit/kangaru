@@ -13,10 +13,9 @@ constructor(props) {
   
   render() {
     const {
-      code,
       onCodeChange,
-      handleTransformClick,
-      handleInputChange
+      handleInputChange,
+      script
     } = this.props;
 
     const options = {
@@ -26,15 +25,14 @@ constructor(props) {
       <div className="editor">
         <MonacoEditor
           width="100%"
-          height="400"
+          height="360"
           language="javascript"
           theme="vs-light"
-          value={code}
+          value={script}
           options={options}
           onChange={onCodeChange}
           editorDidMount={this.editorDidMount}
         />
-        <button className="btn waves-effect waves-light green darken-1" style={{  width: '100%', fontSize: '0.8rem' }} onClick={() => handleTransformClick()}>Save</button>
       </div>
     );
   }

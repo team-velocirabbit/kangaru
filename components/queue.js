@@ -53,22 +53,32 @@ class Queue extends Component {
       this.setState({jobs: jobs});
     });
 
-    ipcRenderer.on('done', (event, arg) => {
-      console.log('it is done!!!');
+    ipcRenderer.on('error', (event, name) => {
+      window.alert('There was an error running the job.' 
+        + ' Please make a new job and retry the process with fixes.');
       const jobs = [];
-      let finishedJob;
-      this.state.jobs.map((job) => {
-        if (job.name === arg.name) {
-          job.duration = arg.duration;
-          job.status = 'Done';
+      this.state.jobs.map(job => {
+        if (job.name === name) {
+          job.end = 'error';
+          job.status = 'An error occurred';
           return '';
         }
         return jobs.push(job);
       });
-			jobs.push(finishedJob);
-			
-			ipcRenderer.send('notify');
+      this.setState(jobs);
+    });
 
+    ipcRenderer.on('done', (event, name) => {
+      window.alert(name + ' has completed!');
+      const jobs = [];
+      this.state.jobs.forEach((job) => {
+        if (job.name === name) {
+          job.end = moment().format('MM-DD-YY HH:mm:ss');
+          job.status = 'Finished';
+          return '';
+        }
+        return jobs.push(job);
+      });
       this.setState(jobs);
     });
   }
@@ -78,12 +88,22 @@ class Queue extends Component {
     const { jobs } = this.state;
     const rows = [];
 
-    jobs.forEach((job) => {
-      const { name, end, status } = job;
-      const now = moment();
-      const start = now.format('MM-DD-YY HH:mm:ss');
-      rows.unshift({ name, start, end, status });
-    });
+    if (jobs.length === 0) {
+      const defaultQueue = {
+        name: 'There is currently nothing to display in the queue.',
+        start: 'n/a',
+        end: 'n/a',
+        status: 'n/a'
+      }
+      rows.unshift(defaultQueue);
+    } else {
+      jobs.forEach((job) => {
+        const { name, end, status } = job;
+        const now = moment();
+        const start = now.format('MM-DD-YY HH:mm:ss');
+        rows.unshift({ name, start, end, status });
+      });
+    }
 
     return (
       <Paper className={classes.root}>
